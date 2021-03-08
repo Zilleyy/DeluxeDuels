@@ -1,5 +1,7 @@
 package com.prophaze.luxduels.profile;
 
+import com.prophaze.luxduels.LuxDuels;
+import com.prophaze.luxduels.file.Yaml;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -12,10 +14,13 @@ import java.util.UUID;
  */
 public class Profile {
 
+    private Yaml file;
+
     private UUID uuid;
 
     protected Profile(UUID uuid) {
         this.uuid = uuid;
+        this.file = new Yaml(uuid.toString(), LuxDuels.getInstance().getDataFolder().getAbsolutePath() + "/PlayerData/");
     }
 
     public UUID getUUID() {

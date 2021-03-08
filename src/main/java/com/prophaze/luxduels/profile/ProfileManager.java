@@ -17,8 +17,12 @@ public class ProfileManager {
         return null;
     }
 
-    public void addProfile() {
+    public void addProfile(UUID uuid) {
+        this.profiles.add(new Profile(uuid));
+    }
 
+    public void removeProfile(Profile profile) {
+        this.profiles.remove(profile);
     }
 
 }
