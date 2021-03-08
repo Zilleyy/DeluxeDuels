@@ -1,9 +1,12 @@
 package com.prophaze.luxduels.arena;
 
+import com.prophaze.luxduels.LuxDuels;
+import com.prophaze.luxduels.profile.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,6 +22,8 @@ public class Arena {
     /* Location */
     private String world;
     private int x, y, z;
+
+    private List<Profile> members;
 
     /**
      * Constructor for Arena, should only be called from the ArenaManager.
@@ -60,6 +65,14 @@ public class Arena {
 
     public int getZ() {
         return this.z;
+    }
+
+    public void addMember(Profile profile) {
+        this.members.add(profile);
+    }
+
+    public void addMember(UUID uuid) {
+        this.members.add(LuxDuels.getInstance().getProfileManager().getProfileByUUID(uuid));
     }
 
 }

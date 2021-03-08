@@ -135,11 +135,7 @@ public class Yaml {
     }
 
     public List<String> getKeysAsList() {
-        final List<String> keys = new ArrayList<>();
-
-        keys.addAll(keySet());
-
-        return keys;
+        return new ArrayList<>(keySet());
     }
 
     public <T> T getOrSetDefault(final String key, final T def) {
