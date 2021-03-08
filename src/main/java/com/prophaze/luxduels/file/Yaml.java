@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  * <br>
  * Date: 9/03/2021 @ 10:12 am AEST
  */
+
 public class Yaml {
 
     final Logger logger = Logger.getLogger("minecraft");
@@ -135,11 +136,7 @@ public class Yaml {
     }
 
     public List<String> getKeysAsList() {
-        final List<String> keys = new ArrayList<>();
-
-        keys.addAll(keySet());
-
-        return keys;
+        return new ArrayList<>(keySet());
     }
 
     public <T> T getOrSetDefault(final String key, final T def) {
