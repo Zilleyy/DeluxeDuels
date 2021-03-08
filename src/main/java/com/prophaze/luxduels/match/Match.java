@@ -1,6 +1,8 @@
 package com.prophaze.luxduels.match;
 
+import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
+import lombok.Getter;
 
 /**
  * Author: Zilleyy
@@ -9,19 +11,13 @@ import com.prophaze.luxduels.profile.Profile;
  */
 public class Match {
 
-    private Profile one, two;
+    @Getter private final Profile profileOne, profileTwo;
+    @Getter private final Arena arena;
 
-    public Match(Profile one, Profile two) {
-        this.one = one;
-        this.two = two;
-    }
-
-    public Profile getProfileOne() {
-        return this.one;
-    }
-
-    public Profile getProfileTwo() {
-        return this.two;
+    public Match(Profile profileOne, Profile profileTwo, Arena arena) {
+        this.profileOne = profileOne;
+        this.profileTwo = profileTwo;
+        this.arena = arena;
     }
 
 }

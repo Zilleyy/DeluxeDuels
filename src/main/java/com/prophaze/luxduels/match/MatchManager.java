@@ -1,5 +1,7 @@
 package com.prophaze.luxduels.match;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +12,10 @@ import java.util.List;
  */
 public class MatchManager {
 
-    private List<Match> matches = new ArrayList<>();
+    @Getter private final List<Match> matches = new ArrayList<>();
 
     public void createMatch() {
-        this.matches.add(new Match(null, null));
+        this.matches.add(new Match(null, null, null));
     }
 
 }
