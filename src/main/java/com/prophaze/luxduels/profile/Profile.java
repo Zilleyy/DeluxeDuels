@@ -3,6 +3,7 @@ package com.prophaze.luxduels.profile;
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.file.Yaml;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -17,7 +18,7 @@ public class Profile {
 
     @Getter private final Yaml file;
     @Getter private final UUID UUID;
-    @Getter private final Statistics playerStats;
+    @Setter @Getter private Statistics playerStats;
 
     /**
      * Constructor for Profile, should only be called from the ProfileManager.
@@ -26,7 +27,6 @@ public class Profile {
     protected Profile(UUID UUID) {
         this.UUID = UUID;
         this.file = new Yaml(this.getUUID().toString(), LuxDuels.getInstance().getDataFolder().getAbsolutePath() + "/PlayerData/");
-        this.playerStats = new Statistics(this);
     }
 
     public Player getPlayer() {

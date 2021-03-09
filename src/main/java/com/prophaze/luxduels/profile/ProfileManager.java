@@ -2,7 +2,6 @@ package com.prophaze.luxduels.profile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -22,7 +21,11 @@ public class ProfileManager {
     // TODO LOAD PROFILE FROM FILE.
     public void loadProfile(UUID uuid) {
         Profile profile = new Profile(uuid);
-        addProfile(profile);
+        if(profile.getFile().get("players." + uuid) != null) {
+            profile.setPlayerStats(profile.getPlayerStats().fromString(profile.getFile().getString("players." + uuid + ".stats")));
+        } else profile.setPlayerStats(new Statistics(profile));
+        profiles.add(profile);
+
     }
 
     private void addProfile(Profile profile) {

@@ -10,10 +10,26 @@ import lombok.Setter;
  */
 public class Statistics {
 
-    private final Profile profile;
-    @Getter @Setter public int kills,deaths,wins,losses,elo,totalMatches;
+    @Getter @Setter private int kills = 0,deaths = 0,wins = 0,losses = 0,elo = 0,totalMatches = 0;
 
     public Statistics(Profile profile) {
-        this.profile = profile;
+        profile.getFile().set("players." + profile.getUUID() + ".stats", this.toString());
+    }
+
+    private Statistics(String[] stats) {
+        setKills(Integer.parseInt(stats[0]));
+        setDeaths(Integer.parseInt(stats[1]));
+        setWins(Integer.parseInt(stats[2]));
+        setLosses(Integer.parseInt(stats[3]));
+        setElo(Integer.parseInt(stats[4]));
+        setTotalMatches(Integer.parseInt(stats[5]));
+    }
+
+    public Statistics fromString(String deserialize) {
+        return new Statistics(deserialize.split(","));
+    }
+
+    public String toString() {
+        return kills + "," + deaths + ","+ wins + "," + losses + "," + elo + "," + totalMatches;
     }
 }
