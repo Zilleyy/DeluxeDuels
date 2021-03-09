@@ -5,6 +5,6 @@ import lombok.Setter;
 
 public class MatchSettings {
 
-    @Getter @Setter private int countToWin;
+    @Getter @Setter private int countToWin = 1;
 
 }
