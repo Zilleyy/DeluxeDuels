@@ -2,6 +2,7 @@ package com.prophaze.luxduels.profile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -13,15 +14,22 @@ public class ProfileManager {
 
     private List<Profile> profiles = new ArrayList<>();
 
+    // Optional<?>#findAny()#get() might throw a NullPointerException if it didn't find anything I'm not sure...
     public Profile getProfileByUUID(UUID uuid) {
-        return null;
+        return this.profiles.stream().filter(profile -> profile.getUUID().equals(uuid)).findAny().get();
     }
 
-    public void addProfile(UUID uuid) {
-        this.profiles.add(new Profile(uuid));
+    // TODO LOAD PROFILE FROM FILE.
+    public void loadProfile(UUID uuid) {
+        Profile profile = new Profile(uuid);
+        addProfile(profile);
     }
 
-    public void removeProfile(Profile profile) {
+    private void addProfile(Profile profile) {
+        this.profiles.add(profile);
+    }
+
+    private void removeProfile(Profile profile) {
         this.profiles.remove(profile);
     }
 

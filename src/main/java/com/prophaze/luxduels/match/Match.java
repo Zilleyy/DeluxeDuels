@@ -47,6 +47,9 @@ public class Match {
 
 }
 
+/**
+ * This enum represents the
+ */
 enum GameState {
     WAITING, STARTING, PLAYING, FINISHED
 }
