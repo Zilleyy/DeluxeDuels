@@ -2,6 +2,7 @@ package com.prophaze.luxduels.event;
 
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.match.Match;
+import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import static com.prophaze.luxduels.util.Messenger.send;
@@ -74,6 +76,14 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onExplode(EntityExplodeEvent event) {
         LuxDuels.getInstance().getArenaManager().getArenaContaining(event.getLocation()).getMatch().addBlocks(event.blockList().toArray(new Block[0]));
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
+        Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getPlayer().getUniqueId());
+        if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
+            event.setCancelled(true);
+        }
     }
 
 }
