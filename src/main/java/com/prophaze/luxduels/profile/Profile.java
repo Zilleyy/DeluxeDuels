@@ -26,7 +26,7 @@ public class Profile {
     protected Profile(UUID UUID) {
         this.UUID = UUID;
         this.file = new Yaml(this.getUUID().toString(), LuxDuels.getInstance().getDataFolder().getAbsolutePath() + "/PlayerData/");
-        this.playerStats = new Statistics();
+        this.playerStats = new Statistics(this);
     }
 
     public Player getPlayer() {
