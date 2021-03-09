@@ -1,5 +1,7 @@
 package com.prophaze.luxduels.queue;
 
+import com.prophaze.luxduels.arena.ArenaManager;
+import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.match.MatchType;
 import com.prophaze.luxduels.profile.Profile;
 
@@ -29,6 +31,12 @@ public class Queue {
                 }
             }
         }
+    }
+
+    public Match next(MatchType matchType) {
+        if(this.queue.get(matchType) == null) return null;
+        if(this.queue.get(matchType).size() < 2) return null;
+        return new Match(this.queue.get(matchType).get(0), this.queue.get(matchType).get(1), ArenaManager.getVacant());
     }
 
 }

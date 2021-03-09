@@ -14,24 +14,24 @@ import java.util.List;
  */
 public class MatchManager {
 
-    private final List<Match> matches = new ArrayList<>();
+    private static final List<Match> matches = new ArrayList<>();
 
-    public void createMatch(Profile profileOne, Profile profileTwo, Arena arena) {
-        this.matches.add(new Match(profileOne, profileTwo, arena));
+    public static void createMatch(Profile profileOne, Profile profileTwo, Arena arena) {
+        matches.add(new Match(profileOne, profileTwo, arena));
     }
 
-    public Match getMatch(Profile profile) {
+    public static Match getMatch(Profile profile) {
         return matches.stream().filter(match -> match.hasProfile(profile)).findFirst().orElse(null);
     }
 
-    public boolean isInMatch(Profile profile) {
-        for(Match match : this.matches) {
+    public static boolean isInMatch(Profile profile) {
+        for(Match match : matches) {
             if(match.hasProfile(profile)) return true;
         }
         return false;
     }
 
-    public int matchCount(Arena arena) {
+    public static int matchCount(Arena arena) {
         if(arena != null) {
             return (int) matches.stream().filter(match -> match.getArena().equals(arena)).count();
         }

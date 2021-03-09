@@ -17,15 +17,10 @@ public class LuxDuels extends JavaPlugin {
 
     @Getter public static LuxDuels instance;
 
-    @Getter private ProfileManager profileManager;
-    @Getter private ArenaManager arenaManager;
-    @Getter private MatchManager matchManager;
-
     @Override
     public void onEnable() {
         instance = this;
 
-        this.loadManagers();
         this.registerEvents();
     }
 
@@ -47,12 +42,6 @@ public class LuxDuels extends JavaPlugin {
         for(Class<Listener> listener : listeners) {
             pm.registerEvents(listener.getConstructor().newInstance(), this);
         }
-    }
-
-    private void loadManagers() {
-        this.profileManager = new ProfileManager();
-        this.arenaManager = new ArenaManager();
-        this.matchManager = new MatchManager();
     }
 
 }
