@@ -3,6 +3,7 @@ package com.prophaze.luxduels.match;
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Author: Zilleyy
@@ -11,13 +12,19 @@ import lombok.Getter;
  */
 public class Match {
 
-    @Getter private final Profile profileOne, profileTwo;
     @Getter private final Arena arena;
+
+    @Getter @Setter private Profile profileOne, profileTwo;
 
     public Match(Profile profileOne, Profile profileTwo, Arena arena) {
         this.profileOne = profileOne;
         this.profileTwo = profileTwo;
         this.arena = arena;
+    }
+
+    public boolean hasProfile(Profile profile) {
+        return profile.getPlayerUUID().equals(profileOne.getPlayerUUID())
+                || profile.getPlayerUUID().equals(profileTwo.getPlayerUUID());
     }
 
 }

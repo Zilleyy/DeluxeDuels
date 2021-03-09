@@ -1,6 +1,7 @@
 package com.prophaze.luxduels.match;
 
-import lombok.Getter;
+import com.prophaze.luxduels.arena.Arena;
+import com.prophaze.luxduels.profile.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,14 @@ import java.util.List;
  */
 public class MatchManager {
 
-    @Getter private final List<Match> matches = new ArrayList<>();
+    private final List<Match> matches = new ArrayList<>();
 
-    public void createMatch() {
-        this.matches.add(new Match(null, null, null));
+    public void createMatch(Profile profileOne, Profile profileTwo, Arena arena) {
+        this.matches.add(new Match(profileOne, profileTwo, arena));
+    }
+
+    public Match getMatch(Profile profile) {
+        return matches.stream().filter(match -> match.hasProfile(profile)).findFirst().orElse(null);
     }
 
 }
