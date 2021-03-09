@@ -19,7 +19,7 @@ public class Match {
     @Getter private final Arena arena;
     @Getter private final MatchSettings matchSettings;
     @Getter @Setter private Profile profileOne, profileTwo;
-    @Getter @Setter private GameState gameState;
+    @Getter @Setter private MatchState matchState;
 
     private List<UUID> matchSpectators;
 
@@ -29,27 +29,27 @@ public class Match {
         this.arena = arena;
         this.matchSettings = new MatchSettings();
         this.matchSpectators = Lists.newArrayList();
-        setState(GameState.STARTING);
+        this.setState(MatchState.STARTING);
     }
 
     public boolean hasProfile(Profile profile) {
-        return profile.getUUID().equals(profileOne.getUUID())
-                || profile.getUUID().equals(profileTwo.getUUID());
+        return profile.getUUID().equals(this.profileOne.getUUID())
+                || profile.getUUID().equals(this.profileTwo.getUUID());
     }
 
-    public GameState getState() {
-        return gameState;
+    public MatchState getState() {
+        return this.matchState;
     }
 
-    public void setState(GameState newState) {
-        gameState = newState;
+    public void setState(MatchState newState) {
+        this.matchState = newState;
     }
 
 }
 
 /**
- * This enum represents the
+ * This enum represents the possible states of the match.
  */
-enum GameState {
+enum MatchState {
     WAITING, STARTING, PLAYING, FINISHED
 }
