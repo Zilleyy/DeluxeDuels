@@ -2,17 +2,15 @@ package com.prophaze.luxduels.event;
 
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.match.Match;
-import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
-import com.prophaze.luxduels.profile.ProfileManager;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import static com.prophaze.luxduels.util.Messenger.send;
@@ -23,6 +21,17 @@ import static com.prophaze.luxduels.util.Messenger.send;
  * Date: 9/03/2021 @ 11:04 am AEST
  */
 public class PlayerListener implements Listener {
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getEntity().getUniqueId());
+        if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
+            Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
+            if(profile.getUUID().equals(match.getProfileOne().getUUID())) {
+                match.setWinner(match.getProfileOne());
+            } match.setWinner(match.getProfileTwo());
+        }
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

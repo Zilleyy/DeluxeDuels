@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,8 +20,10 @@ public class Match {
 
     @Getter private final Arena arena;
     @Getter private final MatchSettings matchSettings;
-    @Getter @Setter private Profile profileOne, profileTwo;
-    @Getter @Setter private MatchState matchState;
+    @Getter private final Profile profileOne, profileTwo;
+    @Getter private MatchState matchState;
+
+    private Profile winner;
 
     private List<UUID> matchSpectators;
 
@@ -35,7 +36,7 @@ public class Match {
         this.arena = arena;
         this.matchSettings = new MatchSettings();
         this.matchSpectators = Lists.newArrayList();
-        this.setState(MatchState.STARTING);
+        this.matchState = MatchState.STARTING;
     }
 
     public boolean hasProfile(Profile profile) {
@@ -43,12 +44,13 @@ public class Match {
                 || profile.getUUID().equals(this.profileTwo.getUUID());
     }
 
-    public MatchState getState() {
-        return this.matchState;
+    public void setWinner(Profile winner) {
+        if(!matchState.equals(MatchState.FINISHED)) setMatchState(MatchState.FINISHED);
+        this.winner = winner;
     }
 
-    public void setState(MatchState newState) {
-        this.matchState = newState;
+    public void setMatchState(MatchState matchState) {
+        this.matchState = matchState;
     }
 
     public void addBlocks(Block... values) {
@@ -69,6 +71,11 @@ public class Match {
             entry.getValue().getBlock().setType(entry.getKey());
         }
         this.blocks.clear();
+    }
+
+    public Profile getWinner() {
+        if(matchState.equals(MatchState.FINISHED)) return winner;
+        return null;
     }
 
 }

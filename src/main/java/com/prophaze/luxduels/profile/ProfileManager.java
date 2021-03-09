@@ -18,7 +18,6 @@ public class ProfileManager {
         return this.profiles.stream().filter(profile -> profile.getUUID().equals(uuid)).findAny().get();
     }
 
-    // TODO LOAD PROFILE FROM FILE.
     public void loadProfile(UUID uuid) {
         Profile profile = new Profile(uuid);
         if(profile.getFile().get("players." + uuid) != null) {
