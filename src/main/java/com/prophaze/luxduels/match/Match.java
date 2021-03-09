@@ -5,6 +5,7 @@ import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -24,7 +25,8 @@ public class Match {
 
     private List<UUID> matchSpectators;
 
-    private Map<Material, List<Block>> blocks = new HashMap<>();
+    // Key = the material it was before it was modified
+    private Map<Material, List<Location>> blocks = new HashMap<>();
 
     public Match(Profile profileOne, Profile profileTwo, Arena arena) {
         this.profileOne = profileOne;
@@ -48,23 +50,23 @@ public class Match {
         this.matchState = newState;
     }
 
-    public void addBlock(Material key, Block value) {
+    public void addBlock(Material key, Location value) {
         if(this.blocks.containsKey(key)) {
-            List<Block> blocks = this.blocks.get(key);
-            blocks.add(value);
-            this.blocks.put(key, blocks);
+            List<Location> locations = this.blocks.get(key);
+            locations.add(value);
+            this.blocks.put(key, locations);
         } else {
             this.blocks.put(key, Collections.singletonList(value));
         }
     }
 
-    public void addBlocks(Material key, Block... values) {
+    public void addBlocks(Material key, Location... values) {
         if(this.blocks.containsKey(key)) {
-            List<Block> blocks = this.blocks.get(key);
-            for(Block block : values) {
-                blocks.add(block);
+            List<Location> locations = this.blocks.get(key);
+            for(Location location : values) {
+                locations.add(location);
             }
-            this.blocks.put(key, blocks);
+            this.blocks.put(key, locations);
         } else {
             this.blocks.put(key, Arrays.asList(values));
         }

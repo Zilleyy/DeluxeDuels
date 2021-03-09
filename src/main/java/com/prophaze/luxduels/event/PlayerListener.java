@@ -5,6 +5,7 @@ import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,7 +36,9 @@ public class PlayerListener implements Listener {
         Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getPlayer().getUniqueId());
         if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
             Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
-            match.addPlacedBlock(event.getBlockPlaced());
+
+            Block placed = event.getBlockPlaced();
+            match.addBlock(placed.getType(), placed.getLocation());
         }
     }
 
