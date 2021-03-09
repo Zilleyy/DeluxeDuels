@@ -6,9 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Author: Zilleyy
  * <br>

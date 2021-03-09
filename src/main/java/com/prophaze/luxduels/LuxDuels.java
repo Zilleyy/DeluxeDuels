@@ -21,6 +21,10 @@ public class LuxDuels extends JavaPlugin {
         this.loadManagers();
     }
 
+    private void registerEvents() {
+
+    }
+
     private void loadManagers() {
         this.profileManager = new ProfileManager();
         this.arenaManager = new ArenaManager();

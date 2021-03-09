@@ -33,8 +33,8 @@ public class Match {
     }
 
     public boolean hasProfile(Profile profile) {
-        return profile.getPlayerUUID().equals(profileOne.getPlayerUUID())
-                || profile.getPlayerUUID().equals(profileTwo.getPlayerUUID());
+        return profile.getUUID().equals(profileOne.getUUID())
+                || profile.getUUID().equals(profileTwo.getUUID());
     }
 
     public GameState getState() {

@@ -16,17 +16,21 @@ import java.util.UUID;
 public class Profile {
 
     @Getter private final Yaml file;
-    @Getter private final UUID playerUUID;
+    @Getter private final UUID UUID;
     @Getter private final Statistics playerStats;
 
-    protected Profile(UUID playerUUID) {
-        this.playerUUID = playerUUID;
-        this.file = new Yaml(playerUUID.toString(), LuxDuels.getInstance().getDataFolder().getAbsolutePath() + "/PlayerData/");
+    /**
+     * Constructor
+     * @param UUID the UUID of the player
+     */
+    protected Profile(UUID UUID) {
+        this.UUID = UUID;
+        this.file = new Yaml(this.getUUID().toString(), LuxDuels.getInstance().getDataFolder().getAbsolutePath() + "/PlayerData/");
         this.playerStats = new Statistics();
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer(this.playerUUID);
+        return Bukkit.getPlayer(this.UUID);
     }
 
 }
