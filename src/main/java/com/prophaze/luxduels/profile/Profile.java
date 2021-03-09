@@ -17,10 +17,12 @@ public class Profile {
 
     @Getter private final Yaml file;
     @Getter private final UUID playerUUID;
+    @Getter private final Statistics playerStats;
 
     protected Profile(UUID playerUUID) {
         this.playerUUID = playerUUID;
         this.file = new Yaml(playerUUID.toString(), LuxDuels.getInstance().getDataFolder().getAbsolutePath() + "/PlayerData/");
+        this.playerStats = new Statistics();
     }
 
     public Player getPlayer() {

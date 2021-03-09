@@ -1,5 +1,8 @@
 package com.prophaze.luxduels.profile;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Author: Zilleyy
  * <br>
@@ -7,6 +10,6 @@ package com.prophaze.luxduels.profile;
  */
 public class Statistics {
 
-
+    @Getter @Setter public int kills,deaths,wins,losses,elo,totalMatches;
 
 }
