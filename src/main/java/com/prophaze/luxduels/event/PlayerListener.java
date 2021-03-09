@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -17,7 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import static com.prophaze.luxduels.util.Messenger.send;
 
 /**
- * Author: Zilleyy
+ * Author: Zilleyy, ProPhaze
  * <br>
  * Date: 9/03/2021 @ 11:04 am AEST
  */
@@ -60,9 +61,11 @@ public class PlayerListener implements Listener {
             Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
 
             Block broken = event.getBlock();
-            if(!match.containsBlock(broken.getType(), broken.getLocation())) {
+            if(!match.containsBlockAt(broken.getLocation())) {
                 event.setCancelled(true);
                 // ONLY PLAYER MADE BLOCKS CAN BE HAND BROKEN
+            } else {
+                match.removeBlockAt(broken.getLocation());
             }
         }
 

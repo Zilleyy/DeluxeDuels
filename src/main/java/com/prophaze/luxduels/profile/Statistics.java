@@ -29,6 +29,7 @@ public class Statistics {
         return new Statistics(deserialize.split(","));
     }
 
+    @Override
     public String toString() {
         return kills + "," + deaths + ","+ wins + "," + losses + "," + elo + "," + totalMatches;
     }

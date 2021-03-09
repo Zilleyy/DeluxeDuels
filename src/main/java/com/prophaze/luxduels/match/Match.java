@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.AbstractMap.*;
 
 /**
- * Author: Zilleyy
+ * Author: Zilleyy, ProPhaze
  * <br>
  * Date: 9/03/2021 @ 10:42 am AEST
  */
@@ -63,10 +63,16 @@ public class Match {
         this.blocks.add(new SimpleEntry<>(key, value));
     }
 
+    public void removeBlockAt(Location location) {
+        for(SimpleEntry<Material, Location> entry : this.blocks) {
+            if(entry.getValue().equals(location)) this.blocks.remove(entry);
+        }
+    }
+
     /**
      * Sets all the blocks back to what they were and then clear the block list.
      */
-    public void clearBlocks() {
+    public void resetBlocks() {
         for(SimpleEntry<Material, Location> entry : this.blocks) {
             entry.getValue().getBlock().setType(entry.getKey());
         }
@@ -75,6 +81,13 @@ public class Match {
 
     public boolean containsBlock(Material key, Location value) {
         return blocks.contains(new SimpleEntry<>(key,value));
+    }
+
+    public boolean containsBlockAt(Location location) {
+        for(SimpleEntry<Material, Location> entry : this.blocks) {
+            if(entry.getValue().equals(location)) return true;
+        }
+        return false;
     }
 
     public Profile getWinner() {

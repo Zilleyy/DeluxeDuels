@@ -39,7 +39,7 @@ public class Yaml {
     private String pathPrefix = "";
 
     // SETTINGS
-    private boolean autoSave = false;
+    private boolean autoSave = true;
 
     public Yaml(final String name, final String path) {
         this.name = name;
@@ -54,8 +54,9 @@ public class Yaml {
         }
     }
 
-    public void toggleAutoSave(final boolean onOff) {
-        this.autoSave = onOff;
+    // Autosave is on by default
+    public void setAutoSave(final boolean flag) {
+        this.autoSave = flag;
     }
 
     public void save() {

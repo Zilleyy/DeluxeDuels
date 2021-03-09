@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 /**
- * Author: Zilleyy
+ * Author: Zilleyy, ProPhaze
  * <br>
  * Date: 9/03/2021 @ 9:58 am AEST
  */
