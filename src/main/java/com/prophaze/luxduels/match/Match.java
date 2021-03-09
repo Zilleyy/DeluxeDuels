@@ -24,7 +24,7 @@ public class Match {
 
     private List<UUID> matchSpectators;
 
-    private List<Block> placedBlocks = new ArrayList<>();
+    private Map<Material, List<Block>> blocks = new HashMap<>();
 
     public Match(Profile profileOne, Profile profileTwo, Arena arena) {
         this.profileOne = profileOne;
@@ -48,13 +48,25 @@ public class Match {
         this.matchState = newState;
     }
 
-    public void addPlacedBlock(Block block) {
-        this.placedBlocks.add(block);
+    public void addBlock(Material key, Block value) {
+        if(this.blocks.containsKey(key)) {
+            List<Block> blocks = this.blocks.get(key);
+            blocks.add(value);
+            this.blocks.put(key, blocks);
+        } else {
+            this.blocks.put(key, Collections.singletonList(value));
+        }
     }
 
-    public void removePlacedBlocks() {
-        for(Block block : this.placedBlocks) {
-            block.setType(Material.AIR);
+    public void addBlocks(Material key, Block... values) {
+        if(this.blocks.containsKey(key)) {
+            List<Block> blocks = this.blocks.get(key);
+            for(Block block : values) {
+                blocks.add(block);
+            }
+            this.blocks.put(key, blocks);
+        } else {
+            this.blocks.put(key, Arrays.asList(values));
         }
     }
 

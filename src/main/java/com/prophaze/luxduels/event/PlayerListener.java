@@ -8,7 +8,9 @@ import com.prophaze.luxduels.profile.ProfileManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import static com.prophaze.luxduels.util.Messenger.send;
@@ -35,6 +37,11 @@ public class PlayerListener implements Listener {
             Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
             match.addPlacedBlock(event.getBlockPlaced());
         }
+    }
+
+    @EventHandler
+    public void onExplode(EntityExplodeEvent event) {
+
     }
 
 }
