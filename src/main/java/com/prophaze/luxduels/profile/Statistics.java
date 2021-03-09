@@ -25,7 +25,7 @@ public class Statistics {
         setTotalMatches(Integer.parseInt(stats[5]));
     }
 
-    public Statistics fromString(String deserialize) {
+    public static Statistics fromString(String deserialize) {
         return new Statistics(deserialize.split(","));
     }
 
