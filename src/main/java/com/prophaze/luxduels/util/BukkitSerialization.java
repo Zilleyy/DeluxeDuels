@@ -1,4 +1,4 @@
-package com.prophaze.luxduels.utils;
+package com.prophaze.luxduels.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
