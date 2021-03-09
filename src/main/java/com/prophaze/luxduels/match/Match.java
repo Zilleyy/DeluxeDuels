@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import java.util.*;
+import java.util.AbstractMap.*;
 
 /**
  * Author: Zilleyy
@@ -26,7 +27,7 @@ public class Match {
     private List<UUID> matchSpectators;
 
     // Key = the material it was before it was modified
-    private Map<Material, List<Location>> blocks = new HashMap<>();
+    private List<SimpleEntry<Material, Location>> blocks = new ArrayList<>();
 
     public Match(Profile profileOne, Profile profileTwo, Arena arena) {
         this.profileOne = profileOne;
@@ -50,26 +51,20 @@ public class Match {
         this.matchState = newState;
     }
 
-    public void addBlock(Material key, Location value) {
-        if(this.blocks.containsKey(key)) {
-            List<Location> locations = this.blocks.get(key);
-            locations.add(value);
-            this.blocks.put(key, locations);
-        } else {
-            this.blocks.put(key, Collections.singletonList(value));
+    public void addBlocks(Block... values) {
+        for(Block block : values) {
+            this.blocks.add(new SimpleEntry<>(block.getType(), block.getLocation()));
         }
     }
 
-    public void addBlocks(Material key, Location... values) {
-        if(this.blocks.containsKey(key)) {
-            List<Location> locations = this.blocks.get(key);
-            for(Location location : values) {
-                locations.add(location);
-            }
-            this.blocks.put(key, locations);
-        } else {
-            this.blocks.put(key, Arrays.asList(values));
+    /**
+     * Sets all the blocks back to what they were and then clear the block list.
+     */
+    public void clearBlocks() {
+        for(SimpleEntry<Material, Location> entry : this.blocks) {
+            entry.getValue().getBlock().setType(entry.getKey());
         }
+        this.blocks.clear();
     }
 
 }

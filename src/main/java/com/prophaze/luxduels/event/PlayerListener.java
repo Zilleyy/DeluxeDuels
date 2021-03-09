@@ -36,15 +36,13 @@ public class PlayerListener implements Listener {
         Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getPlayer().getUniqueId());
         if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
             Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
-
-            Block placed = event.getBlockPlaced();
-            match.addBlock(placed.getType(), placed.getLocation());
+            match.addBlocks(event.getBlockPlaced());
         }
     }
 
     @EventHandler
     public void onExplode(EntityExplodeEvent event) {
-
+        LuxDuels.getInstance().getArenaManager().getArenaContaining(event.getLocation()).getMatch().addBlocks(event.blockList().toArray(new Block[0]));
     }
 
 }

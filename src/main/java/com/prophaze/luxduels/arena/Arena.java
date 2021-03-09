@@ -2,6 +2,9 @@ package com.prophaze.luxduels.arena;
 
 import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.profile.Profile;
+import com.prophaze.luxduels.util.Cuboid;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,53 +16,24 @@ import org.bukkit.World;
  */
 public class Arena {
 
-    /* Identifiers */
-    private String name;
+    @Getter private String name;
+    @Getter private Cuboid cuboid;
 
-    /* Location */
-    private String world;
-    private int x, y, z;
+    @Getter @Setter private Match match;
 
     /**
      * Constructor for Arena, should only be called from the ArenaManager.
      * @param name
-     * @param location
+     * @param l1
+     * @param l2
      */
-    protected Arena(String name, Location location) {
+    protected Arena(String name, Location l1, Location l2) {
         this.name = name;
-
-        this.world = location.getWorld().getName();
-        this.x = location.getBlockX();
-        this.y = location.getBlockY();
-        this.z = location.getBlockZ();
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Location getLocation() {
-        return new Location(this.getWorld(), this.x, this.y, this.z);
+        this.cuboid = new Cuboid(l1, l2);
     }
 
     public World getWorld() {
-        return Bukkit.getWorld(this.world);
-    }
-
-    public String getWorldName() {
-        return this.world;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public int getZ() {
-        return this.z;
+        return this.cuboid.getWorld();
     }
 
 }
