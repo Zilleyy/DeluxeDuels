@@ -34,6 +34,12 @@ public class Queue {
         }
     }
 
+    public boolean hasNext(MatchType matchType) {
+        if(this.queue.get(matchType) == null) return false;
+        if(this.queue.get(matchType).size() < 2) return false;
+        return true;
+    }
+
     public Match next(MatchType matchType) {
         if(this.queue.get(matchType) == null) return null;
         if(this.queue.get(matchType).size() < 2) return null;
