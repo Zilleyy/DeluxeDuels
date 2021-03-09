@@ -73,6 +73,10 @@ public class Match {
         this.blocks.clear();
     }
 
+    public boolean containsBlock(Material key, Location value) {
+        return blocks.contains(new SimpleEntry<>(key,value));
+    }
+
     public Profile getWinner() {
         if(matchState.equals(MatchState.FINISHED)) return winner;
         return null;
