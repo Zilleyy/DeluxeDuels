@@ -2,6 +2,7 @@ package com.prophaze.luxduels.match;
 
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,13 @@ public class MatchManager {
 
     public Match getMatch(Profile profile) {
         return matches.stream().filter(match -> match.hasProfile(profile)).findFirst().orElse(null);
+    }
+
+    public boolean isInMatch(Profile profile) {
+        for(Match match : this.matches) {
+            if(match.hasProfile(profile)) return true;
+        }
+        return false;
     }
 
     public int matchCount(Arena arena) {

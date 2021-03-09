@@ -5,9 +5,10 @@ import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Author: Zilleyy
@@ -22,6 +23,8 @@ public class Match {
     @Getter @Setter private MatchState matchState;
 
     private List<UUID> matchSpectators;
+
+    private List<Block> placedBlocks = new ArrayList<>();
 
     public Match(Profile profileOne, Profile profileTwo, Arena arena) {
         this.profileOne = profileOne;
@@ -43,6 +46,16 @@ public class Match {
 
     public void setState(MatchState newState) {
         this.matchState = newState;
+    }
+
+    public void addPlacedBlock(Block block) {
+        this.placedBlocks.add(block);
+    }
+
+    public void removePlacedBlocks() {
+        for(Block block : this.placedBlocks) {
+            block.setType(Material.AIR);
+        }
     }
 
 }
