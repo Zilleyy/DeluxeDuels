@@ -16,8 +16,14 @@ public class MatchManager {
 
     private static final List<Match> matches = new ArrayList<>();
 
-    public static void createMatch(Profile profileOne, Profile profileTwo, Arena arena) {
-        matches.add(new Match(profileOne, profileTwo, arena));
+    public static void create(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
+        matches.add(new Match(arena, type, profileOne, profileTwo));
+    }
+
+    public static Match createAndGet(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
+        Match result = new Match(arena, type, profileOne, profileTwo);
+        matches.add(result);
+        return result;
     }
 
     public static Match getMatch(Profile profile) {

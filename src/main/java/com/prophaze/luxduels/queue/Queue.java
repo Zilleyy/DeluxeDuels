@@ -2,6 +2,7 @@ package com.prophaze.luxduels.queue;
 
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.match.Match;
+import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.match.MatchType;
 import com.prophaze.luxduels.profile.Profile;
 
@@ -36,7 +37,8 @@ public class Queue {
     public Match next(MatchType matchType) {
         if(this.queue.get(matchType) == null) return null;
         if(this.queue.get(matchType).size() < 2) return null;
-        return new Match(this.queue.get(matchType).get(0), this.queue.get(matchType).get(1), ArenaManager.getVacant());
+        // Will need to add a thing to check if there is no vacant arenas, if there isn't -> create a new arena. (or wait)
+        return MatchManager.createAndGet(ArenaManager.getVacant(), matchType, this.queue.get(matchType).get(0), this.queue.get(matchType).get(1));
     }
 
 }

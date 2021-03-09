@@ -22,6 +22,7 @@ public class Match {
     @Getter private final MatchSettings matchSettings;
     @Getter private final Profile profileOne, profileTwo;
     @Getter private MatchState matchState;
+    @Getter private MatchType type;
 
     private Profile winner;
 
@@ -30,10 +31,12 @@ public class Match {
     // Key = the material it was before it was modified
     private List<SimpleEntry<Material, Location>> blocks = new ArrayList<>();
 
-    public Match(Profile profileOne, Profile profileTwo, Arena arena) {
+    protected Match(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
+        this.arena = arena;
+        this.type = type;
         this.profileOne = profileOne;
         this.profileTwo = profileTwo;
-        this.arena = arena;
+
         this.matchSettings = new MatchSettings();
         this.matchSpectators = Lists.newArrayList();
         this.matchState = MatchState.STARTING;
