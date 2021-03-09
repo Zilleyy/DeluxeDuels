@@ -20,8 +20,8 @@ public class Profile {
     @Getter private final Statistics playerStats;
 
     /**
-     * Constructor
-     * @param UUID the UUID of the player
+     * Constructor for Profile, should only be called from the ProfileManager.
+     * @param UUID
      */
     protected Profile(UUID UUID) {
         this.UUID = UUID;

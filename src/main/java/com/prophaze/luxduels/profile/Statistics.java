@@ -10,6 +10,6 @@ import lombok.Setter;
  */
 public class Statistics {
 
-    @Getter @Setter public int kills,deaths,wins,losses,elo,totalMatches;
+    @Getter @Setter public int kills, deaths, wins, losses, elo, totalMatches;
 
 }

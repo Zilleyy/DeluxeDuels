@@ -17,7 +17,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        send(event.getPlayer(), "LuxDuels is currently in development");
+        send(event.getPlayer(), "&4&lNote: &7This is a beta, please report all bugs in our discord.");
         LuxDuels.getInstance().getProfileManager().addProfile(event.getPlayer().getUniqueId());
     }
 

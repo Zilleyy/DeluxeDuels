@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class Messenger {
 
     public static void send(Player player, String message) {
-
+        player.sendMessage(color(message));
     }
 
     public static String color(String message) {
