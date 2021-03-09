@@ -11,8 +11,9 @@ import lombok.Setter;
  * Date: 9/03/2021 @ 10:42 am AEST
  */
 public class Match {
-
+    
     @Getter private final Arena arena;
+    @Getter private final MatchSettings matchSettings;
 
     @Getter @Setter private Profile profileOne, profileTwo;
 
@@ -20,6 +21,7 @@ public class Match {
         this.profileOne = profileOne;
         this.profileTwo = profileTwo;
         this.arena = arena;
+        this.matchSettings = new MatchSettings();
     }
 
     public boolean hasProfile(Profile profile) {

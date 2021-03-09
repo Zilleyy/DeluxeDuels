@@ -1,9 +1,10 @@
 package com.prophaze.luxduels.match;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class MatchSettings {
 
-    @Getter private int countToWin;
+    @Getter @Setter private int countToWin;
 
 }

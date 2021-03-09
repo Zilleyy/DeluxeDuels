@@ -23,4 +23,11 @@ public class MatchManager {
         return matches.stream().filter(match -> match.hasProfile(profile)).findFirst().orElse(null);
     }
 
+    public int matchCount(Arena arena) {
+        if(arena != null) {
+            return (int) matches.stream().filter(match -> match.getArena().equals(arena)).count();
+        }
+        return matches.size();
+    }
+
 }
