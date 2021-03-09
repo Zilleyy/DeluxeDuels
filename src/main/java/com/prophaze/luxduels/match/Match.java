@@ -57,6 +57,10 @@ public class Match {
         }
     }
 
+    public void addBlock(Material key, Location value) {
+        this.blocks.add(new SimpleEntry<>(key, value));
+    }
+
     /**
      * Sets all the blocks back to what they were and then clear the block list.
      */
