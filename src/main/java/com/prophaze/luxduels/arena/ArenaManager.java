@@ -4,6 +4,7 @@ import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Author: Zilleyy
@@ -25,8 +26,15 @@ public class ArenaManager {
         return null;
     }
 
-    public void addArena(String name, Location location) {
-        this.arenas.add(new Arena(name, location));
+    public Arena getArenaContaining(Location location) {
+        for(Arena arena : this.arenas) {
+            if(arena.getCuboid().contains(location)) return arena;
+        }
+        return null;
+    }
+
+    public void addArena(String name, Location l1, Location l2) {
+        this.arenas.add(new Arena(name, l1, l2));
     }
 
     public void removeArena(Arena arena) {
