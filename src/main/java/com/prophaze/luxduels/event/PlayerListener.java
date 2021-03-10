@@ -1,8 +1,8 @@
 package com.prophaze.luxduels.event;
 
-import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.match.Match;
+import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import org.bukkit.Material;

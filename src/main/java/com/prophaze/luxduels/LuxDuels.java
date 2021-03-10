@@ -1,9 +1,6 @@
 package com.prophaze.luxduels;
 
-import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.event.PlayerListener;
-import com.prophaze.luxduels.match.MatchManager;
-import com.prophaze.luxduels.profile.ProfileManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;

@@ -24,8 +24,8 @@ public class Match {
     @Getter private final Arena arena;
     @Getter private final MatchSettings matchSettings;
     @Getter private final Profile profileOne, profileTwo;
+    @Getter private final MatchType type;
     @Getter private MatchState matchState;
-    @Getter private MatchType type;
 
     private Profile winner;
 
@@ -70,9 +70,7 @@ public class Match {
     }
 
     public void removeBlockAt(Location location) {
-        for(SimpleEntry<Material, Location> entry : this.blocks) {
-            if(entry.getValue().equals(location)) this.blocks.remove(entry);
-        }
+        this.blocks.removeIf(entry -> entry.getValue().equals(location));
     }
 
     /**
