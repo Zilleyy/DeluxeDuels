@@ -2,6 +2,7 @@ package com.prophaze.luxduels.match;
 
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;

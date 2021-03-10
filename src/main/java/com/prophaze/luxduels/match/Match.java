@@ -1,8 +1,10 @@
 package com.prophaze.luxduels.match;
 
 import com.google.common.collect.Lists;
+import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
+import com.prophaze.luxduels.task.Countdown;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +31,7 @@ public class Match {
 
     private Profile winner;
 
-    private List<UUID> matchSpectators;
+    private List<UUID> spectators;
 
     // Key = the material it was before it was modified
     private List<SimpleEntry<Material, Location>> blocks = new ArrayList<>();
@@ -41,8 +43,16 @@ public class Match {
         this.profileTwo = profileTwo;
 
         this.matchSettings = new MatchSettings();
-        this.matchSpectators = Lists.newArrayList();
-        this.matchState = MatchState.STARTING;
+        this.spectators = Lists.newArrayList();
+        this.matchState = MatchState.WAITING;
+    }
+
+    public void addSpectator(Profile profile) {
+        this.spectators.add(profile.getUUID());
+    }
+
+    public void addSpectator(UUID uuid) {
+        this.spectators.add(uuid);
     }
 
     public boolean hasProfile(Profile profile) {
@@ -101,10 +111,8 @@ public class Match {
 
     public void start() {
         this.matchState = MatchState.STARTING;
-
-        String placeholder = this.matchState.replace(String.valueOf(60));
-        send(this.profileOne.getPlayer(), placeholder);
-        send(this.profileTwo.getPlayer(), placeholder);
+        new Countdown("&bMatching starting in &e{0} &bseconds...", "&e{0}&b...", 10, profileOne.getPlayer(), profileTwo.getPlayer())
+        .runTaskTimer(LuxDuels.getInstance(), 20L, 20L);
     }
 
     public void end() {
@@ -115,25 +123,25 @@ public class Match {
         send(this.profileTwo.getPlayer(), placeholder);
     }
 
-}
+    /**
+     * This enum represents the possible states of the match.
+     */
+    public enum MatchState {
+        WAITING("Waiting to start the match..."),
+        STARTING("Starting match in {0} seconds."),
+        PLAYING("Match started, good luck!"),
+        FINISHED("Gg! {0} won the match.");
 
-/**
- * This enum represents the possible states of the match.
- */
-enum MatchState {
-    WAITING("Waiting to start the match..."),
-    STARTING("Starting match in {0} seconds."),
-    PLAYING("Match started, good luck!"),
-    FINISHED("Gg! {0} won the match.");
+        @Getter private String message;
 
-    @Getter private String message;
+        MatchState(String message) {
+            this.message = color(message);
+        }
 
-    MatchState(String message) {
-        this.message = color(message);
-    }
+        public String replace(String var) {
+            return this.message.replaceAll("[{0}]", var);
+        }
 
-    public String replace(String var) {
-        return this.message.replaceAll("[{0}]", var);
     }
 
 }
