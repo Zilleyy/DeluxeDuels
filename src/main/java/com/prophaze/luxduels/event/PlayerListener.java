@@ -1,8 +1,10 @@
 package com.prophaze.luxduels.event;
 
 import com.prophaze.luxduels.LuxDuels;
+import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.profile.Profile;
+import com.prophaze.luxduels.profile.ProfileManager;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -26,9 +28,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getEntity().getUniqueId());
-        if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
-            Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
+        Profile profile = ProfileManager.getProfileByUUID(event.getEntity().getUniqueId());
+        if(MatchManager.isInMatch(profile)) {
+            Match match = MatchManager.getMatch(profile);
             if(profile.getUUID().equals(match.getProfileOne().getUUID())) {
                 match.setWinner(match.getProfileOne());
             } match.setWinner(match.getProfileTwo());
@@ -40,14 +42,14 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         send(player, "&4&lNote: &7This is a beta, please report all bugs in our discord.");
-        LuxDuels.getInstance().getProfileManager().loadProfile(player.getUniqueId());
+        ProfileManager.loadProfile(player.getUniqueId());
     }
 
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
-        Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getPlayer().getUniqueId());
-        if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
-            Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
+        Profile profile = ProfileManager.getProfileByUUID(event.getPlayer().getUniqueId());
+        if(MatchManager.isInMatch(profile)) {
+            Match match = MatchManager.getMatch(profile);
 
             Block placed = event.getBlockPlaced();
             match.addBlock(Material.AIR, placed.getLocation());
@@ -56,9 +58,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
-        Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getPlayer().getUniqueId());
-        if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
-            Match match = LuxDuels.getInstance().getMatchManager().getMatch(profile);
+        Profile profile = ProfileManager.getProfileByUUID(event.getPlayer().getUniqueId());
+        if(MatchManager.isInMatch(profile)) {
+            Match match = MatchManager.getMatch(profile);
 
             Block broken = event.getBlock();
             if(!match.containsBlockAt(broken.getLocation())) {
@@ -73,13 +75,13 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onExplode(EntityExplodeEvent event) {
-        LuxDuels.getInstance().getArenaManager().getArenaContaining(event.getLocation()).getMatch().addBlocks(event.blockList().toArray(new Block[0]));
+        ArenaManager.getArenaContaining(event.getLocation()).getMatch().addBlocks(event.blockList().toArray(new Block[0]));
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        Profile profile = LuxDuels.getInstance().getProfileManager().getProfileByUUID(event.getPlayer().getUniqueId());
-        if(LuxDuels.getInstance().getMatchManager().isInMatch(profile)) {
+        Profile profile = ProfileManager.getProfileByUUID(event.getPlayer().getUniqueId());
+        if(MatchManager.isInMatch(profile)) {
             event.setCancelled(true);
         }
     }

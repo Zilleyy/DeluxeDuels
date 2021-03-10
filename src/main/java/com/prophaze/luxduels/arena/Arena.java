@@ -34,4 +34,8 @@ public class Arena {
         return this.cuboid.getWorld();
     }
 
+    public boolean isVacant() {
+        return getMatch() == null;
+    }
+
 }

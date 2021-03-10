@@ -11,6 +11,9 @@ import org.bukkit.block.Block;
 import java.util.*;
 import java.util.AbstractMap.*;
 
+import static com.prophaze.luxduels.util.Messenger.color;
+import static com.prophaze.luxduels.util.Messenger.send;
+
 /**
  * Author: Zilleyy, ProPhaze
  * <br>
@@ -22,6 +25,7 @@ public class Match {
     @Getter private final MatchSettings matchSettings;
     @Getter private final Profile profileOne, profileTwo;
     @Getter private MatchState matchState;
+    @Getter private MatchType type;
 
     private Profile winner;
 
@@ -30,10 +34,12 @@ public class Match {
     // Key = the material it was before it was modified
     private List<SimpleEntry<Material, Location>> blocks = new ArrayList<>();
 
-    public Match(Profile profileOne, Profile profileTwo, Arena arena) {
+    protected Match(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
+        this.arena = arena;
+        this.type = type;
         this.profileOne = profileOne;
         this.profileTwo = profileTwo;
-        this.arena = arena;
+
         this.matchSettings = new MatchSettings();
         this.matchSpectators = Lists.newArrayList();
         this.matchState = MatchState.STARTING;
@@ -91,8 +97,24 @@ public class Match {
     }
 
     public Profile getWinner() {
-        if(matchState.equals(MatchState.FINISHED)) return winner;
+        if(matchState.equals(MatchState.FINISHED)) return this.winner;
         return null;
+    }
+
+    public void start() {
+        this.matchState = MatchState.STARTING;
+
+        String placeholder = this.matchState.replace(String.valueOf(60));
+        send(this.profileOne.getPlayer(), placeholder);
+        send(this.profileTwo.getPlayer(), placeholder);
+    }
+
+    public void end() {
+        this.matchState = MatchState.FINISHED;
+
+        String placeholder = this.matchState.replace(this.getWinner().getPlayer().getName());
+        send(this.profileOne.getPlayer(), placeholder);
+        send(this.profileTwo.getPlayer(), placeholder);
     }
 
 }
@@ -101,5 +123,19 @@ public class Match {
  * This enum represents the possible states of the match.
  */
 enum MatchState {
-    WAITING, STARTING, PLAYING, FINISHED
+    WAITING("Waiting to start the match..."),
+    STARTING("Starting match in {0} seconds."),
+    PLAYING("Match started, good luck!"),
+    FINISHED("Gg! {0} won the match.");
+
+    @Getter private String message;
+
+    MatchState(String message) {
+        this.message = color(message);
+    }
+
+    public String replace(String var) {
+        return this.message.replaceAll("[{0}]", var);
+    }
+
 }
