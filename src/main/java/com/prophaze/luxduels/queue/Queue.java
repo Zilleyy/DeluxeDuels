@@ -34,6 +34,11 @@ public class Queue {
         }
     }
 
+    /**
+     * Use this instead of null checking next(MatchType).
+     * @param matchType
+     * @return
+     */
     public boolean hasNext(MatchType matchType) {
         if(this.queue.get(matchType) == null) return false;
         if(this.queue.get(matchType).size() < 2) return false;
