@@ -11,23 +11,23 @@ import java.util.LinkedList;
 
 public class Queue {
 
-    private HashMap<MatchType, LinkedList<Profile>> queue = new HashMap<>();
+    private static HashMap<MatchType, LinkedList<Profile>> queue = new HashMap<>();
 
-    public void addProfile(MatchType matchType, Profile profile) {
-        if(this.queue.keySet().contains(matchType)) {
-            this.queue.get(matchType).add(profile);
+    public static void addProfile(MatchType matchType, Profile profile) {
+        if(queue.keySet().contains(matchType)) {
+            queue.get(matchType).add(profile);
         } else {
             LinkedList list = new LinkedList<Profile>();
             list.add(profile);
-            this.queue.put(matchType, list);
+            queue.put(matchType, list);
         }
     }
 
-    public void removeProfile(Profile profile) {
-        for(MatchType matchType : this.queue.keySet()) {
-            for(Profile queued : this.queue.get(matchType)) {
+    public static void removeProfile(Profile profile) {
+        for(MatchType matchType : queue.keySet()) {
+            for(Profile queued : queue.get(matchType)) {
                 if(queued.equals(profile)) {
-                    this.queue.get(matchType).remove(queued);
+                    queue.get(matchType).remove(queued);
                     return;
                 }
             }
@@ -35,21 +35,21 @@ public class Queue {
     }
 
     /**
-     * Use this instead of null checking next(MatchType).
+     * Use instead of null checking next(MatchType).
      * @param matchType
      * @return
      */
-    public boolean hasNext(MatchType matchType) {
-        if(this.queue.get(matchType) == null) return false;
-        if(this.queue.get(matchType).size() < 2) return false;
+    public static boolean hasNext(MatchType matchType) {
+        if(queue.get(matchType) == null) return false;
+        if(queue.get(matchType).size() < 2) return false;
         return true;
     }
 
-    public Match next(MatchType matchType) {
-        if(this.queue.get(matchType) == null) return null;
-        if(this.queue.get(matchType).size() < 2) return null;
+    public static Match next(MatchType matchType) {
+        if(queue.get(matchType) == null) return null;
+        if(queue.get(matchType).size() < 2) return null;
         // Will need to add a thing to check if there is no vacant arenas, if there isn't -> create a new arena. (or wait)
-        return MatchManager.createAndGet(ArenaManager.getVacant(), matchType, this.queue.get(matchType).get(0), this.queue.get(matchType).get(1));
+        return MatchManager.createAndGet(ArenaManager.getVacant(), matchType, queue.get(matchType).get(0), queue.get(matchType).get(1));
     }
 
 }
