@@ -2,6 +2,7 @@ package com.prophaze.luxduels.match;
 
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class MatchManager {
 
-    private static final List<Match> matches = new ArrayList<>();
+    @Getter private static final List<Match> matches = new ArrayList<>();
 
     public static void create(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
         matches.add(new Match(arena, type, profileOne, profileTwo));

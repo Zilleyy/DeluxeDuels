@@ -34,6 +34,32 @@ public class Queue {
         }
     }
 
+    public static boolean isInQueue(Profile profile) {
+        return queue.containsValue(profile);
+    }
+
+    public MatchType getTypeOf(Profile profile) {
+        if(!isInQueue(profile)) return null;
+        for (MatchType type : queue.keySet()) {
+            if(queue.containsValue(profile)) return type;
+        }
+        return null;
+    }
+
+    public static int getSize(MatchType type) {
+        return queue.get(type).size();
+    }
+
+    public static int getPositionOf(Profile profile) {
+        if(!isInQueue(profile)) return -1;
+        for(MatchType type : queue.keySet()) {
+            for(Profile queued : queue.get(type)) {
+                if(queued.equals(profile)) return queue.get(type).indexOf(profile);
+            }
+        }
+        return -1;
+    }
+
     /**
      * Use instead of null checking next(MatchType).
      * @param matchType

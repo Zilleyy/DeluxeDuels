@@ -13,6 +13,11 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+
+        <repository>
+            <id>commandapi</id>
+            <url>https://raw.githubusercontent.com/JorelAli/CommandAPI/mvn-repo/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -22,17 +27,32 @@
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.18</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>fr.minuskube.inv</groupId>
             <artifactId>smart-invs</artifactId>
             <version>1.2.7</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.jorel</groupId>
+            <artifactId>commandapi-shade</artifactId>
+            <version>5.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.jorel</groupId>
+            <artifactId>commandapi-annotations</artifactId>
+            <version>5.3</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -65,6 +85,25 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>dev.jorel</groupId>
+                            <artifactId>commandapi-annotations</artifactId>
+                            <version>5.3</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.18</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>
