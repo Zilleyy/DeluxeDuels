@@ -1,11 +1,9 @@
 package com.prophaze.luxduels.arena;
 
 import com.prophaze.luxduels.match.Match;
-import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.util.Cuboid;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 

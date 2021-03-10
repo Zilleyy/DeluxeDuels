@@ -2,7 +2,6 @@ package com.prophaze.luxduels.event;
 
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.match.Match;
-import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;

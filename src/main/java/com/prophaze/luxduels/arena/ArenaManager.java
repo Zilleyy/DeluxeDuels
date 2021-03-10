@@ -4,7 +4,6 @@ import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Author: Zilleyy, ProPhaze

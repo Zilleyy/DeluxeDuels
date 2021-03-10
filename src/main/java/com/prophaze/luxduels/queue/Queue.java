@@ -8,13 +8,13 @@ import java.util.LinkedList;
 
 public class Queue {
 
-    private HashMap<MatchType, LinkedList<Profile>> queue = new HashMap<>();
+    private final HashMap<MatchType, LinkedList<Profile>> queue = new HashMap<>();
 
     public void addProfile(MatchType matchType, Profile profile) {
-        if(this.queue.keySet().contains(matchType)) {
+        if(this.queue.containsKey(matchType)) {
             this.queue.get(matchType).add(profile);
         } else {
-            LinkedList list = new LinkedList<Profile>();
+            LinkedList<Profile> list = new LinkedList<>();
             list.add(profile);
             this.queue.put(matchType, list);
         }
