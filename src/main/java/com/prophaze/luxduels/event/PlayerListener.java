@@ -6,6 +6,7 @@ import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.queue.Queue;
+import com.prophaze.luxduels.util.Serialize;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -18,7 +19,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
 import static com.prophaze.luxduels.util.Messenger.send;
 
 /**
@@ -32,6 +32,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Profile profile = ProfileManager.getProfile(event.getEntity().getUniqueId());
+        // Temp testing code
+        profile.getPlayerStats().setDeaths(profile.getPlayerStats().getDeaths() + 1);
+        profile.getPlayerStats().setLosses(profile.getPlayerStats().getLosses() + 1);
         if(MatchManager.isInMatch(profile)) {
             Match match = MatchManager.getMatch(profile);
             if(profile.getUUID().equals(match.getProfileOne().getUUID())) {
@@ -46,6 +49,9 @@ public class PlayerListener implements Listener {
 
         send(player, "&4&lNote: &7This is a beta, please report all bugs in our discord.");
         ProfileManager.loadProfile(player.getUniqueId());
+        Profile profile = ProfileManager.getProfile(player);
+        send(player, profile.getPlayerStats().getDeaths() + "");
+        send(player, profile.getPlayerStats().getLosses() + "");
     }
 
     @EventHandler
@@ -58,6 +64,7 @@ public class PlayerListener implements Listener {
                 match.setWinner(match.getProfileTwo());
             } else match.setWinner(match.getProfileOne());
         }
+        profile.getFile().set(profile.getUUID().toString() + ".stats", profile.getPlayerStats().toString());
     }
 
     @EventHandler

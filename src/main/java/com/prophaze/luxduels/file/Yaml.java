@@ -8,8 +8,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -176,6 +175,10 @@ public class Yaml {
 
     public boolean hasSection() {
         return hasSection(getPathPrefix());
+    }
+
+    public boolean isEmpty() {
+        return this.configuration.getKeys(true).size() == 0;
     }
 
     public void createSection(final String path) {

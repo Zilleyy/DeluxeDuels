@@ -15,10 +15,21 @@ import java.util.Map;
  */
 public class Statistics implements ConfigurationSerializable {
 
-    @Getter @Setter private int kills = 0,deaths = 0,wins = 0,losses = 0,elo = 0,totalMatches = 0;
+    @Getter @Setter private int kills,deaths,wins,losses,elo,totalMatches;
 
+    // Default Constructor for when file is empty.
+    public Statistics() {
+        this.kills = 0;
+        this.deaths = 0;
+        this.wins = 0;
+        this.losses = 0;
+        this.elo = 0;
+        this.totalMatches = 0;
+    }
+
+    // Constructor whenever they have statistics to load.
     public Statistics(Profile profile) {
-        profile.getFile().set("players." + profile.getUUID() + ".stats", this.toString());
+        Serialize.deserializeEncodedBukkitObject(profile.getFile().getString(profile.getUUID().toString() + ".stats"));
     }
 
     // Could name each variable in the constructor but im lazy
@@ -29,15 +40,6 @@ public class Statistics implements ConfigurationSerializable {
         this.losses = stats[3];
         this.elo = stats[4];
         this.totalMatches = stats[5];
-    }
-
-    private Statistics(String[] stats) {
-        setKills(Integer.parseInt(stats[0]));
-        setDeaths(Integer.parseInt(stats[1]));
-        setWins(Integer.parseInt(stats[2]));
-        setLosses(Integer.parseInt(stats[3]));
-        setElo(Integer.parseInt(stats[4]));
-        setTotalMatches(Integer.parseInt(stats[5]));
     }
 
     /**
@@ -55,11 +57,10 @@ public class Statistics implements ConfigurationSerializable {
 
         data.put("Kills", this.kills);
         data.put("Deaths", this.deaths);
-        data.put("Wins", this.deaths);
+        data.put("Wins", this.wins);
         data.put("Losses", this.losses);
         data.put("ELO", this.elo);
         data.put("TotalMatches", this.totalMatches);
-
         return data;
     }
 
