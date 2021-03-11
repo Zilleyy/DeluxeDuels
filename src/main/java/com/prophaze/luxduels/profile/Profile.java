@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -20,6 +22,8 @@ public class Profile {
     @Getter private final UUID UUID;
     @Setter @Getter private Statistics playerStats;
 
+    private HashMap<Integer, ItemStack> savedInventory = new HashMap<>();
+
     /**
      * Constructor for Profile, should only be called from the ProfileManager.
      * @param UUID
@@ -31,6 +35,14 @@ public class Profile {
 
     public Player getPlayer() {
         return Bukkit.getPlayer(this.UUID);
+    }
+
+    protected HashMap<Integer, ItemStack> getSavedInventory() {
+        return this.savedInventory;
+    }
+
+    protected void setSavedInventory(HashMap<Integer, ItemStack> savedInventory) {
+        this.savedInventory = savedInventory;
     }
 
 }

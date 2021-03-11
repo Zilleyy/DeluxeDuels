@@ -43,7 +43,8 @@ public class LuxDuels extends JavaPlugin {
         CommandAPI.onEnable(this);
 
         this.registerEvents();
-        this.loadProfiles();
+        ProfileManager.loadProfiles();
+        ArenaManager.loadArenas();
         this.loadRunnables();
     }
 
@@ -79,12 +80,6 @@ public class LuxDuels extends JavaPlugin {
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ignore) {
 
             }
-        }
-    }
-
-    private void loadProfiles() {
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            ProfileManager.loadProfile(player.getUniqueId());
         }
     }
 

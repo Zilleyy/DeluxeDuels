@@ -1,8 +1,11 @@
 package com.prophaze.luxduels.profile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.*;
 
 /**
  * Author: Zilleyy, ProPhaze
@@ -14,8 +17,18 @@ public class ProfileManager {
     private static List<Profile> profiles = new ArrayList<>();
 
     // Optional<?>#findAny()#get() might throw a NullPointerException if it didn't find anything I'm not sure...
-    public static Profile getProfileByUUID(UUID uuid) {
+    public static Profile getProfile(UUID uuid) {
         return profiles.stream().filter(profile -> profile.getUUID().equals(uuid)).findAny().get();
+    }
+
+    public static Profile getProfile(Player player) {
+        return getProfile(player.getUniqueId());
+    }
+
+    public static void loadProfiles() {
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            ProfileManager.loadProfile(player.getUniqueId());
+        }
     }
 
     public static void loadProfile(UUID uuid) {
@@ -24,7 +37,10 @@ public class ProfileManager {
             profile.setPlayerStats(Statistics.fromString(profile.getFile().getString("players." + uuid + ".stats")));
         } else profile.setPlayerStats(new Statistics(profile));
         profiles.add(profile);
+    }
 
+    public static void loadProfile(Player player) {
+        loadProfile(player.getUniqueId());
     }
 
     private static void addProfile(Profile profile) {
@@ -33,6 +49,28 @@ public class ProfileManager {
 
     private static void removeProfile(Profile profile) {
         profiles.remove(profile);
+    }
+
+    /**
+     * Save the inventory of the player before they join a match so their items can be returned to them.
+     * @param profile
+     */
+    public static void saveInventory(Profile profile) {
+        HashMap<Integer, ItemStack> savedInventory = new HashMap<>();
+
+        Inventory inventory = profile.getPlayer().getInventory();
+        for(int slot = 0; slot < inventory.getSize(); slot++) {
+            savedInventory.put(slot, inventory.getItem(slot));
+        }
+        profile.setSavedInventory(savedInventory);
+    }
+
+    public static void giveSavedInventory(Profile profile) {
+        Inventory inventory = profile.getPlayer().getInventory();
+        for(Map.Entry<Integer, ItemStack> entry : profile.getSavedInventory().entrySet()) {
+            if(entry.getValue() == null) continue;
+            inventory.setItem(entry.getKey(), entry.getValue());
+        }
     }
 
 }

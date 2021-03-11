@@ -56,8 +56,7 @@ public class Match {
     }
 
     public boolean hasProfile(Profile profile) {
-        return profile.getUUID().equals(this.profileOne.getUUID())
-                || profile.getUUID().equals(this.profileTwo.getUUID());
+        return profile.getUUID().equals(this.profileOne.getUUID()) || profile.getUUID().equals(this.profileTwo.getUUID());
     }
 
     public void setWinner(Profile winner) {
@@ -111,8 +110,7 @@ public class Match {
 
     public void start() {
         this.matchState = MatchState.STARTING;
-        new Countdown("&bMatching starting in &e{0} &bseconds...", "&e{0}&b...", 10, profileOne.getPlayer(), profileTwo.getPlayer())
-        .runTaskTimer(LuxDuels.getInstance(), 20L, 20L);
+        new Countdown("&7Matching starting in &e{0} &7seconds...", "&e{0}&7...", "&7The game has started, GLHF!", 10, profileOne.getPlayer(), profileTwo.getPlayer());
     }
 
     public void end() {

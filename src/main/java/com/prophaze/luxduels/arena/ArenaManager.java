@@ -41,6 +41,10 @@ public class ArenaManager {
         return null;
     }
 
+    public static void loadArenas() {
+        // TODO
+    }
+
     public static void addArena(String name, Location l1, Location l2) {
         arenas.add(new Arena(name, l1, l2));
     }

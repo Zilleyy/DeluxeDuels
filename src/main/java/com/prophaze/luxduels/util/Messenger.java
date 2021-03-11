@@ -1,5 +1,6 @@
 package com.prophaze.luxduels.util;
 
+import com.prophaze.luxduels.profile.Profile;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -16,6 +17,10 @@ public class Messenger {
 
     public static void send(CommandSender sender, String message) {
         sender.sendMessage(color(message));
+    }
+
+    public static void send(Profile profile, String message) {
+        send(profile.getPlayer(), message);
     }
 
     public static void sendActionBar(Player player, String message) {

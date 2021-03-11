@@ -1,10 +1,13 @@
 package com.prophaze.luxduels.queue;
 
+import com.prophaze.luxduels.Constant;
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.match.MatchType;
 import com.prophaze.luxduels.profile.Profile;
+import com.prophaze.luxduels.profile.ProfileManager;
+import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,34 +17,50 @@ public class Queue {
     private static HashMap<MatchType, LinkedList<Profile>> queue = new HashMap<>();
 
     public static void addProfile(MatchType matchType, Profile profile) {
-        if(queue.containsKey(matchType)) {
-            queue.get(matchType).add(profile);
-        } else {
-            LinkedList list = new LinkedList<Profile>();
-            list.add(profile);
-            queue.put(matchType, list);
-        }
+        LinkedList list;
+        if(queue.containsKey(matchType)) list = queue.get(matchType);
+        else list = new LinkedList<Profile>();
+
+        list.add(profile);
+        queue.put(matchType, list);
+
+        ProfileManager.saveInventory(profile);
+        clearInventory(profile);
+        applyInventory(profile);
     }
 
     public static void removeProfile(Profile profile) {
-        for(MatchType matchType : queue.keySet()) {
-            for(Profile queued : queue.get(matchType)) {
-                if(queued.equals(profile)) {
-                    queue.get(matchType).remove(queued);
-                    return;
-                }
+        if(!inQueue(profile)) return;
+
+        LinkedList list = queue.get(getTypeOf(profile));
+        list.remove(profile);
+
+        clearInventory(profile);
+        ProfileManager.giveSavedInventory(profile);
+    }
+
+    private static void applyInventory(Profile profile) {
+        Inventory inventory = profile.getPlayer().getInventory();
+        inventory.setItem(8, Constant.LEAVE_QUEUE);
+    }
+
+    private static void clearInventory(Profile profile) {
+        profile.getPlayer().getInventory().clear();
+    }
+
+    public static boolean inQueue(Profile profile) {
+        for(LinkedList<Profile> list : queue.values()) {
+            for(Profile queued : list) {
+                if(queued.equals(profile)) return true;
             }
         }
+        return false;
     }
 
-    public static boolean isInQueue(Profile profile) {
-        return queue.containsValue(profile);
-    }
-
-    public MatchType getTypeOf(Profile profile) {
-        if(!isInQueue(profile)) return null;
+    public static MatchType getTypeOf(Profile profile) {
+        if(!inQueue(profile)) return null;
         for (MatchType type : queue.keySet()) {
-            if(queue.containsValue(profile)) return type;
+            if(queue.get(type).contains(profile)) return type;
         }
         return null;
     }
@@ -51,7 +70,7 @@ public class Queue {
     }
 
     public static int getPositionOf(Profile profile) {
-        if(!isInQueue(profile)) return -1;
+        if(!inQueue(profile)) return -1;
         for(MatchType type : queue.keySet()) {
             for(Profile queued : queue.get(type)) {
                 if(queued.equals(profile)) return queue.get(type).indexOf(profile);

@@ -37,6 +37,17 @@ public class DuelCommand$Command {
             })
             .register();
 
+        new CommandAPICommand("duel")
+            .withArguments(
+                new MultiLiteralArgument("leave")
+                    .setListed(false)
+            )
+            .withAliases("duels")
+            .executes((sender, args) -> {
+                DuelCommand.onLeaveCommand(sender);
+            })
+            .register();
+
         }
 
 }
