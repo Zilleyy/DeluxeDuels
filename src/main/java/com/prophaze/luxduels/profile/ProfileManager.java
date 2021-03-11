@@ -31,8 +31,8 @@ public class ProfileManager {
 
     public static void loadProfile(UUID uuid) {
         Profile profile = new Profile(uuid);
-        if(profile.getFile().get("players." + uuid) != null) {
-            profile.setPlayerStats(Statistics.fromString(profile.getFile().getString("players." + uuid + ".stats")));
+        if(profile.getFile().get("stats") != null) {
+            // profile.setPlayerStats(Statistics.fromString(profile.getFile().getString("stats")));
         } else profile.setPlayerStats(new Statistics(profile));
         profiles.add(profile);
     }

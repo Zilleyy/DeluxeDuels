@@ -3,8 +3,6 @@ package com.prophaze.luxduels;
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.command.DuelCommand;
 import com.prophaze.luxduels.event.PlayerListener;
-import com.prophaze.luxduels.match.MatchManager;
-import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.task.MatchHandler;
 import com.prophaze.luxduels.task.QueueHandler;
@@ -12,14 +10,9 @@ import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 public class LuxDuels extends JavaPlugin {

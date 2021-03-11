@@ -1,7 +1,6 @@
 package com.prophaze.luxduels.match;
 
 import com.google.common.collect.Lists;
-import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.task.Countdown;

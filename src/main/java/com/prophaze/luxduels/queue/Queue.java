@@ -17,9 +17,9 @@ public class Queue {
     private static HashMap<MatchType, LinkedList<Profile>> queue = new HashMap<>();
 
     public static void addProfile(MatchType matchType, Profile profile) {
-        LinkedList list;
+        LinkedList<Profile> list;
         if(queue.containsKey(matchType)) list = queue.get(matchType);
-        else list = new LinkedList<Profile>();
+        else list = new LinkedList<>();
 
         list.add(profile);
         queue.put(matchType, list);
@@ -32,7 +32,7 @@ public class Queue {
     public static void removeProfile(Profile profile) {
         if(!inQueue(profile)) return;
 
-        LinkedList list = queue.get(getTypeOf(profile));
+        LinkedList<? extends Profile> list = queue.get(getTypeOf(profile));
         list.remove(profile);
 
         clearInventory(profile);

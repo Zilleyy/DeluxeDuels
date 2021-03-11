@@ -40,10 +40,6 @@ public class Statistics implements ConfigurationSerializable {
         setTotalMatches(Integer.parseInt(stats[5]));
     }
 
-    public static Statistics fromString(String deserialize) {
-        return new Statistics(deserialize.split(","));
-    }
-
     /**
      * Encodes for storage to player data file.
      * @return Base64 encoded.

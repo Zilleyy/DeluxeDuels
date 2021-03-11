@@ -26,6 +26,7 @@ import static com.prophaze.luxduels.util.Messenger.send;
  * <br>
  * Date: 9/03/2021 @ 11:04 am AEST
  */
+
 public class PlayerListener implements Listener {
 
     @EventHandler
@@ -55,11 +56,8 @@ public class PlayerListener implements Listener {
             Match match = MatchManager.getMatch(profile);
             if(match.getProfileOne().equals(profile)) {
                 match.setWinner(match.getProfileTwo());
-            } else {
-                match.setWinner(match.getProfileOne());
-            }
+            } else match.setWinner(match.getProfileOne());
         }
-        // Save profile here after the winner is set for correct stats
     }
 
     @EventHandler

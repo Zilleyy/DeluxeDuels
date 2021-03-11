@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Pattern;
 
 import static com.prophaze.luxduels.util.Messenger.color;
 import static com.prophaze.luxduels.util.Messenger.send;
@@ -18,9 +17,7 @@ import static com.prophaze.luxduels.util.Messenger.send;
  */
 public class Countdown extends BukkitRunnable {
 
-    @Getter private String initial;
-    @Getter private String format;
-    @Getter private String complete;
+    @Getter private final String initial, format, complete;
     @Getter private int seconds;
     @Getter private final Player[] recipients;
 
