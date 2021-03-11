@@ -1,5 +1,6 @@
 package com.prophaze.luxduels.profile;
 
+import com.prophaze.luxduels.util.Serialize;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -43,9 +44,13 @@ public class Statistics implements ConfigurationSerializable {
         return new Statistics(deserialize.split(","));
     }
 
+    /**
+     * Encodes for storage to player data file.
+     * @return Base64 encoded.
+     */
     @Override
     public String toString() {
-        return kills + "," + deaths + ","+ wins + "," + losses + "," + elo + "," + totalMatches;
+        return Serialize.encodeBukkitObject(this);
     }
 
     @Override

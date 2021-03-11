@@ -1,5 +1,6 @@
 package com.prophaze.luxduels.util;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
