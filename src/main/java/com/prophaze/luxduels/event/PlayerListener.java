@@ -49,7 +49,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        // TODO Save profile
         Profile profile = ProfileManager.getProfile(event.getPlayer());
         Queue.removeProfile(profile);
         if(MatchManager.isInMatch(profile)) {
@@ -60,6 +59,7 @@ public class PlayerListener implements Listener {
                 match.setWinner(match.getProfileOne());
             }
         }
+        // Save profile here after the winner is set for correct stats
     }
 
     @EventHandler

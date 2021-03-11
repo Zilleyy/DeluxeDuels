@@ -26,9 +26,7 @@ public class ProfileManager {
     }
 
     public static void loadProfiles() {
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            ProfileManager.loadProfile(player.getUniqueId());
-        }
+        Bukkit.getOnlinePlayers().forEach(player -> ProfileManager.loadProfile(player.getUniqueId()));
     }
 
     public static void loadProfile(UUID uuid) {
