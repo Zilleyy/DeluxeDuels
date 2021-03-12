@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.UUID;
+
 /**
  * Author: Zilleyy, ProPhaze
  * <br>
@@ -16,6 +18,7 @@ public class Arena {
 
     @Getter private String name;
     @Getter private Cuboid cuboid;
+    @Getter private UUID UUID;
 
     @Getter @Setter private Match match;
 
@@ -28,6 +31,7 @@ public class Arena {
     protected Arena(String name, Location l1, Location l2) {
         this.name = name;
         this.cuboid = new Cuboid(l1, l2);
+        this.UUID = java.util.UUID.randomUUID();
     }
 
     protected Arena(String name, Cuboid cuboid) {

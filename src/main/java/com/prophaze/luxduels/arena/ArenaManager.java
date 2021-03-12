@@ -1,7 +1,5 @@
 package com.prophaze.luxduels.arena;
 
-import com.boydti.fawe.Fawe;
-import com.boydti.fawe.bukkit.regions.plotsquared.FaweLocalBlockQueue;
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.file.Yaml;
 import com.prophaze.luxduels.util.Cuboid;
@@ -27,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Author: Zilleyy, ProPhaze
@@ -44,12 +43,12 @@ public class ArenaManager {
     @Getter @Setter private static int last = 0;
 
     /**
-     * @param name The name used to identify the arena.
+     * @param uuid The uuid used to identify the arena.
      * @return either the arena matching the name, or null if nothing matches.
      */
-    public static Arena getArenaByName(String name) {
+    public static Arena getArenaByUUID(UUID uuid) {
         for(Arena arena : arenas) {
-            if(arena.getName().equals(name)) return arena;
+            if(arena.getUUID().equals(uuid)) return arena;
         }
         return null;
     }
@@ -113,7 +112,7 @@ public class ArenaManager {
     }
 
     public static void saveArena(Arena arena) {
-        file.setPathPrefix(arena.getName());
+        file.setPathPrefix(arena.getUUID().toString());
         file.set("Cuboid", arena.getCuboid());
     }
 
@@ -130,8 +129,8 @@ public class ArenaManager {
         arenas.remove(arena);
     }
 
-    public static void removeArena(String name) {
-        arenas.remove(getArenaByName(name));
+    public static void removeArena(UUID uuid) {
+        arenas.remove(getArenaByUUID(uuid));
     }
 
 }

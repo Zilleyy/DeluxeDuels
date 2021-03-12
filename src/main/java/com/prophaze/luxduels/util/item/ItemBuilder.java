@@ -151,6 +151,16 @@ public class ItemBuilder {
         return this;
     }
 
+    /**
+     * @param enchantment The enchantment to add to the item.
+     * @param level The level of the enchantment to add.
+     * @return The ItemBuilder.
+     */
+    public ItemBuilder addEnchantment(Enchantment enchantment, int level) {
+        item.addEnchantment(enchantment, level);
+        return this;
+    }
+
     public ItemBuilder setGlowing() {
         ItemMeta meta = getItemMeta();
 
