@@ -31,11 +31,11 @@ import java.util.List;
  */
 public class ArenaManager {
 
-    private static Yaml file = LuxDuels.getInstance().getArenaFile();
+    private static final Yaml file = LuxDuels.getInstance().getArenaFile();
 
-    private static List<Arena> arenas = new ArrayList<>();
+    private static final List<Arena> arenas = new ArrayList<>();
 
-    private static World world = Bukkit.getWorld("arenas");
+    private static final World world = Bukkit.getWorld("arenas");
 
     /**
      * @param name The name used to identify the arena.
@@ -89,9 +89,9 @@ public class ArenaManager {
     }
 
     public static void createArena(String name, String schematic, int x, int y, int z) {
-        BlockVector3[] minmax = paste(schematic, x, y, z);
-        Location min = new Location(world, minmax[0].getBlockX(), minmax[0].getBlockY(), minmax[0].getBlockZ());
-        Location max = new Location(world, minmax[1].getBlockX(), minmax[1].getBlockY(), minmax[1].getBlockZ());
+        BlockVector3[] minMax = paste(schematic, x, y, z);
+        Location min = new Location(world, minMax[0].getBlockX(), minMax[0].getBlockY(), minMax[0].getBlockZ());
+        Location max = new Location(world, minMax[1].getBlockX(), minMax[1].getBlockY(), minMax[1].getBlockZ());
 
         Arena arena = new Arena(name, min, max);
         saveArena(arena);

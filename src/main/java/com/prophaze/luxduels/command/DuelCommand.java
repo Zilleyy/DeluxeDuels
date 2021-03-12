@@ -42,7 +42,7 @@ public class DuelCommand {
     }
 
     @Subcommand("join")
-    public static void onJoinCommand(CommandSender sender, @AMultiLiteralArgument({"CASUAL", "COMP", "SHIELD", "NETHERITE", "DIAMOND", "OVERPOWERED", "POTION", "UHC", "CUSTOM"}) String arg) {
+    public static void onJoinCommand(CommandSender sender, @AMultiLiteralArgument({"SHIELD", "NETHERITE", "DIAMOND", "OVERPOWERED", "POTION", "UHC", "CUSTOM"}) String arg) {
         Profile profile = ProfileManager.getProfile(((Player) sender).getUniqueId());
         if(!Queue.inQueue(profile)) {
             Queue.addProfile(MatchType.valueOf(arg), profile);
