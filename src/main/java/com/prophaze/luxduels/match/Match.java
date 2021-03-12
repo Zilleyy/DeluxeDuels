@@ -54,10 +54,6 @@ public class Match {
         this.spectators.add(uuid);
     }
 
-    public boolean hasProfile(Profile profile) {
-        return profile.getUUID().equals(this.profileOne.getUUID()) || profile.getUUID().equals(this.profileTwo.getUUID());
-    }
-
     public void setWinner(Profile winner) {
         if(!matchState.equals(MatchState.FINISHED)) setMatchState(MatchState.FINISHED);
         this.winner = winner;
@@ -100,6 +96,10 @@ public class Match {
             if(entry.getValue().equals(location)) return true;
         }
         return false;
+    }
+
+    public boolean hasProfile(Profile profile) {
+        return profile.getUUID().equals(this.profileOne.getUUID()) || profile.getUUID().equals(this.profileTwo.getUUID());
     }
 
     public Profile getWinner() {
