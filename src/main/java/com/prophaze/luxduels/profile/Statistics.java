@@ -1,19 +1,14 @@
 package com.prophaze.luxduels.profile;
 
-import com.prophaze.luxduels.util.Serialize;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Author: Zilleyy
  * <br>
  * Date: 9/03/2021 @ 10:33 am AEST
  */
-public class Statistics implements ConfigurationSerializable {
+public class Statistics {
 
     @Getter @Setter private int kills,deaths,wins,losses,elo,totalMatches;
 
@@ -29,7 +24,7 @@ public class Statistics implements ConfigurationSerializable {
 
     // Constructor whenever they have statistics to load.
     public Statistics(Profile profile) {
-        Serialize.deserializeEncodedBukkitObject(profile.getFile().getString(profile.getUUID().toString() + ".stats"));
+        // Serialize.deserializeEncodedBukkitObject(profile.getFile().getString(profile.getUUID().toString() + ".stats"));
     }
 
     // Could name each variable in the constructor but im lazy
@@ -48,35 +43,9 @@ public class Statistics implements ConfigurationSerializable {
      */
     @Override
     public String toString() {
-        return Serialize.encodeBukkitObject(this);
+        // return Serialize.encodeBukkitObject(this);
+        return "";
     }
 
-    @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> data = new HashMap<>();
-
-        data.put("Kills", this.kills);
-        data.put("Deaths", this.deaths);
-        data.put("Wins", this.wins);
-        data.put("Losses", this.losses);
-        data.put("ELO", this.elo);
-        data.put("TotalMatches", this.totalMatches);
-        return data;
-    }
-
-    public Statistics valueOf(Map<String, Object> data) {
-        return deserialize(data);
-    }
-
-    public static Statistics deserialize(Map<String, Object> data) {
-        int kills = (int) data.get("Kills");
-        int deaths = (int) data.get("Deaths");
-        int wins = (int) data.get("Wins");
-        int losses = (int) data.get("Losses");
-        int elo = (int) data.get("ELO");
-        int totalMatches = (int) data.get("TotalMatches");
-
-        return new Statistics(kills, deaths, wins, losses, elo, totalMatches);
-    }
 
 }

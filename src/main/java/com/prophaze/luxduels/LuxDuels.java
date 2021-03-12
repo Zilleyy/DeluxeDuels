@@ -2,6 +2,7 @@ package com.prophaze.luxduels;
 
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.command.ArenaCommand;
+import com.prophaze.luxduels.command.BuilderCommand;
 import com.prophaze.luxduels.command.DuelCommand;
 import com.prophaze.luxduels.event.PlayerListener;
 import com.prophaze.luxduels.file.Yaml;
@@ -14,7 +15,6 @@ import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.*;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -74,7 +74,8 @@ public class LuxDuels extends JavaPlugin {
     private void registerCommands() {
         final Class<?>[] classes = new Class[] {
                 DuelCommand.class,
-                ArenaCommand.class
+                ArenaCommand.class,
+                BuilderCommand.class
         };
 
         for(final Class<?> clazz : classes) {
