@@ -7,8 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.prophaze.luxduels.util.Messenger.color;
-import static com.prophaze.luxduels.util.Messenger.send;
+import static com.prophaze.luxduels.util.Messenger.*;
 
 /**
  * Author: Zilleyy
@@ -51,7 +50,7 @@ public class Countdown extends BukkitRunnable {
         }
 
         for (Player player : this.recipients) {
-            send(player, getMessage());
+            //sendTitle(player, getMessage());
         }
         this.seconds--;
         if(this.seconds <= 0) {

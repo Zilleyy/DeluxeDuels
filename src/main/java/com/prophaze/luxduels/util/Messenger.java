@@ -22,6 +22,10 @@ public class Messenger {
         send(profile.getPlayer(), message);
     }
 
+    public static void sendTitle(Player player, String title, String subtitle) {
+        player.sendTitle(color(title), color(subtitle), 1, 20, 1);
+    }
+
     public static void sendActionBar(Player player, String message) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(color(message)));
     }

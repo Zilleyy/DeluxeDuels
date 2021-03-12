@@ -24,8 +24,7 @@ public class ArenaCommand {
     @Subcommand("create")
     public static void createArenaCommand(CommandSender sender, @AStringArgument String name, @AStringArgument String schematic) {
         Player player = (Player) sender;
-        Location location = player.getLocation();
-        ArenaManager.createArena(name, schematic, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        ArenaManager.createArena(name, schematic);
     }
 
     @Subcommand("world")

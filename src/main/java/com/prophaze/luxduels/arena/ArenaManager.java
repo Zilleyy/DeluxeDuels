@@ -1,5 +1,7 @@
 package com.prophaze.luxduels.arena;
 
+import com.boydti.fawe.Fawe;
+import com.boydti.fawe.bukkit.regions.plotsquared.FaweLocalBlockQueue;
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.file.Yaml;
 import com.prophaze.luxduels.util.Cuboid;
@@ -14,6 +16,8 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -36,6 +40,8 @@ public class ArenaManager {
     private static final List<Arena> arenas = new ArrayList<>();
 
     private static final World world = Bukkit.getWorld("arenas");
+
+    @Getter @Setter private static int last = 0;
 
     /**
      * @param name The name used to identify the arena.
@@ -75,7 +81,8 @@ public class ArenaManager {
             clipboard = reader.read();
             minMax[0] = clipboard.getMinimumPoint();
             minMax[1] = clipboard.getMaximumPoint();
-            try (final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), -1)) {
+
+            try (final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), 5000)) {
                 final Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
                         .to(BlockVector3.at(x, y, z))
@@ -88,14 +95,14 @@ public class ArenaManager {
         return minMax;
     }
 
-    public static void createArena(String name, String schematic, int x, int y, int z) {
-        BlockVector3[] minMax = paste(schematic, x, y, z);
+    public static void createArena(String name, String schematic) {
+        BlockVector3[] minMax = paste(schematic, last, 50, last);
         Location min = new Location(world, minMax[0].getBlockX(), minMax[0].getBlockY(), minMax[0].getBlockZ());
         Location max = new Location(world, minMax[1].getBlockX(), minMax[1].getBlockY(), minMax[1].getBlockZ());
 
         Arena arena = new Arena(name, min, max);
         saveArena(arena);
-        arenas.add(arena);
+        addArena(arena);
     }
 
     public static void loadArenas() {
@@ -111,7 +118,12 @@ public class ArenaManager {
     }
 
     public static void addArena(String name, Cuboid cuboid) {
-        arenas.add(new Arena(name, cuboid));
+        addArena(new Arena(name, cuboid));
+    }
+
+    public static void addArena(Arena arena) {
+        arenas.add(arena);
+        last += 1000;
     }
 
     public static void removeArena(Arena arena) {

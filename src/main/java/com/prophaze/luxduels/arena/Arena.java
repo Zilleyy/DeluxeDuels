@@ -43,6 +43,7 @@ public class Arena {
         return getMatch() == null;
     }
 
+    // TODO - GET THE SPAWN POS' FROM THE FILE
     public Location[] getSpawnPos() {
         return new Location[] {
                 this.cuboid.getCenter(),
