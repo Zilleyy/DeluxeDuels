@@ -30,12 +30,25 @@ public class Arena {
         this.cuboid = new Cuboid(l1, l2);
     }
 
+    protected Arena(String name, Cuboid cuboid) {
+        this.name = name;
+        this.cuboid = cuboid;
+    }
+
     public World getWorld() {
         return this.cuboid.getWorld();
     }
 
     public boolean isVacant() {
         return getMatch() == null;
+    }
+
+    public Location[] getSpawnPos() {
+        Location[] pos = new Location[] {
+                this.cuboid.getCenter(),
+                this.cuboid.getCenter()
+        };
+        return pos;
     }
 
 }

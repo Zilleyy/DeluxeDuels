@@ -73,7 +73,7 @@ public class Queue {
         if(!inQueue(profile)) return -1;
         for(MatchType type : queue.keySet()) {
             for(Profile queued : queue.get(type)) {
-                if(queued.equals(profile)) return queue.get(type).indexOf(profile);
+                if(queued.equals(profile)) return queue.get(type).indexOf(profile) + 1;
             }
         }
         return -1;

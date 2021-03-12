@@ -2,6 +2,8 @@ name: LuxDuels
 main: com.prophaze.luxduels.LuxDuels
 version: ${project.version}
 api-version: 1.16
+depend:
+  - WorldEdit
 authors:
   - ProPhaze
   - Zilleyy

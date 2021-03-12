@@ -47,7 +47,7 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        send(player, "&4&lNote: &7This is a beta, please report all bugs in our discord.");
+        send(player, "&4&lNOTE: &7This is a beta, please report all bugs in our discord.");
         ProfileManager.loadProfile(player.getUniqueId());
         Profile profile = ProfileManager.getProfile(player);
         send(player, profile.getPlayerStats().getDeaths() + "");

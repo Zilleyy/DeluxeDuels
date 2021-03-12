@@ -28,12 +28,12 @@ public class DuelCommand {
 
     @Default
     public static void onBaseCommand(CommandSender sender) {
-        send(sender, "&8******************** &e&lDUELS HELP &8********************");
+        send(sender, "&8********************** &e&lDUELS HELP &8**********************");
         send(sender, "&7/duel help &8- &7Displays this help.");
         send(sender, "&7/duel join <type> &8- &7Joins the queue of match type <type>.");
         send(sender, "&7/duel leave &8- &7Leaves the queue you are in.");
         send(sender, "&7/duel invite <player> &8- &7Invite a player to duel with you.");
-        send(sender, "&8**********************************************************");
+        send(sender, "&8**************************************************************");
     }
 
     @Default
@@ -48,7 +48,7 @@ public class DuelCommand {
             Queue.addProfile(MatchType.valueOf(arg), profile);
             send(sender, "&7You joined the queue for &e" + arg + "&7. &8(&7" + Queue.getPositionOf(profile) + "&8/&7" + Queue.getSize(MatchType.valueOf(arg)) + "&8)");
         } else {
-            send(sender, "&7You are already in the queue! Do &e/duel quit &7to leave the queue.");
+            send(sender, "&7You are already in the queue! Do &e/duel leave &7to leave the queue.");
         }
     }
 
