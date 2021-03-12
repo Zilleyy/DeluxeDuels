@@ -1,16 +1,23 @@
 package com.prophaze.luxduels.kits;
 
-import org.bukkit.inventory.Inventory;
+import com.prophaze.luxduels.kits.defaultkits.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KitManager {
 
-    private Map<String, Inventory> serverKits = new HashMap<>();
+    private static final List<Kit> serverKits = new ArrayList<>();
 
-    public void loadServerKits() {
-
+    public static void loadServerKits() {
+        serverKits.add(new NetheriteKit());
+        serverKits.add(new OverpoweredKit());
+        serverKits.add(new PotionKit());
+        serverKits.add(new ShieldKit());
+        serverKits.add(new UHCKit());
     }
 
+    public static Kit getKit(String kitName) {
+        return serverKits.stream().filter(kit -> kit.getKitName().equalsIgnoreCase(kitName)).findFirst().orElse(null);
+    }
 }

@@ -2,6 +2,7 @@ package com.prophaze.luxduels.event;
 
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.command.BuilderCommand;
+import com.prophaze.luxduels.kits.KitManager;
 import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
@@ -32,12 +33,21 @@ import static com.prophaze.luxduels.util.Messenger.send;
 
 public class PlayerListener implements Listener {
 
+    //TODO Turn into actual listener instead of debug method for kits.
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         player.getInventory().getItemInMainHand();
         if (player.getInventory().getItemInMainHand().isSimilar(Items.CASUAL)) {
-            // open casual GUI selection
+            KitManager.getKit("Overpowered").apply(player);
+        } else if (player.getInventory().getItemInMainHand().isSimilar(Items.COMP)) {
+            KitManager.getKit("Shield").apply(player);
+        } else if (player.getInventory().getItemInMainHand().isSimilar(Items.PARTY)) {
+            KitManager.getKit("Netherite").apply(player);
+        } else if (player.getInventory().getItemInMainHand().isSimilar(Items.EDITOR)) {
+            KitManager.getKit("Potion").apply(player);
+        }else if (player.getInventory().getItemInMainHand().isSimilar(Items.SPECTATOR)) {
+            KitManager.getKit("UHC").apply(player);
         }
     }
 

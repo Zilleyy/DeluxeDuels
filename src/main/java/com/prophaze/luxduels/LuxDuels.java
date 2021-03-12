@@ -6,6 +6,7 @@ import com.prophaze.luxduels.command.BuilderCommand;
 import com.prophaze.luxduels.command.DuelCommand;
 import com.prophaze.luxduels.event.PlayerListener;
 import com.prophaze.luxduels.file.Yaml;
+import com.prophaze.luxduels.kits.KitManager;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.task.MatchHandler;
 import com.prophaze.luxduels.task.QueueHandler;
@@ -49,6 +50,7 @@ public class LuxDuels extends JavaPlugin {
         this.registerSerializables();
         ProfileManager.loadProfiles();
         ArenaManager.loadArenas();
+        KitManager.loadServerKits();
         this.loadRunnables();
     }
 

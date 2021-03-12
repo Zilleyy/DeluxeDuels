@@ -1,10 +1,14 @@
 package com.prophaze.luxduels.util.item;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,12 +156,39 @@ public class ItemBuilder {
     }
 
     /**
+     * @param potionEffectType The potion effect to add to the item.
+     * @param duration The duration of the potion effect set on the potion.
+     * @param amplifier The amplifier of the potion's effect.
+     * @param potionColor The color of the potion if it is a potion
+     * @return The ItemBuilder.
+     */
+    public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration, int amplifier, Color potionColor) {
+        if(item.getType().toString().contains("POTION") || item.getType().toString().contains("TIPPED")) {
+            PotionMeta meta = (PotionMeta)getItemMeta();
+            if(potionColor != null) meta.setColor(potionColor);
+            meta.addCustomEffect(new PotionEffect(potionEffectType, duration * 20, amplifier - 1), true);
+            item.setItemMeta(meta);
+        }
+        return this;
+    }
+
+    /**
      * @param enchantment The enchantment to add to the item.
      * @param level The level of the enchantment to add.
      * @return The ItemBuilder.
      */
     public ItemBuilder addEnchantment(Enchantment enchantment, int level) {
         item.addEnchantment(enchantment, level);
+        return this;
+    }
+
+    /**
+     * @param enchantment The unsafe enchantment to add to the item.
+     * @param level The level of the enchantment to add.
+     * @return The ItemBuilder.
+     */
+    public ItemBuilder addUnsafeEnchantment(Enchantment enchantment, int level) {
+        item.addUnsafeEnchantment(enchantment, level);
         return this;
     }
 
