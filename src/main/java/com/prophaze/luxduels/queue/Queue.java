@@ -93,13 +93,18 @@ public class Queue {
     public static Match next(MatchType matchType) {
         if(queue.get(matchType) == null) return null;
         if(queue.get(matchType).size() < 2) return null;
-        // Will need to add a thing to check if there is no vacant arenas, if there isn't -> create a new arena. (or wait)
-        Profile p1, p2;
-        p1 = queue.get(matchType).get(0);
-        p2 = queue.get(matchType).get(1);
-        queue.get(matchType).remove(p1);
-        queue.get(matchType).remove(p2);
-        return MatchManager.createAndGet(ArenaManager.getVacant(), matchType, p1, p2);
+        Match returnMatch = null;
+        if(ArenaManager.getVacant() == null) {
+
+        } else {
+            Profile p1, p2;
+            p1 = queue.get(matchType).get(0);
+            p2 = queue.get(matchType).get(1);
+            queue.get(matchType).remove(p1);
+            queue.get(matchType).remove(p2);
+            returnMatch = MatchManager.createAndGet(ArenaManager.getVacant(), matchType, p1, p2);
+        }
+        return returnMatch;
     }
 
 }

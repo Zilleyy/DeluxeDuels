@@ -118,6 +118,10 @@ public class Match {
         String placeholder = this.matchState.replace(this.getWinner().getPlayer().getName());
         send(this.profileOne.getPlayer(), placeholder);
         send(this.profileTwo.getPlayer(), placeholder);
+
+        resetBlocks();
+
+        this.arena.setMatch(null);
     }
 
     /**
@@ -127,7 +131,7 @@ public class Match {
         WAITING("Waiting to start the match..."),
         STARTING("Starting match in {0} seconds."),
         PLAYING("Match started, good luck!"),
-        FINISHED("Gg! {0} won the match.");
+        FINISHED("GG! {0} won the match.");
 
         @Getter private String message;
 

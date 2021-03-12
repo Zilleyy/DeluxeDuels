@@ -10,6 +10,7 @@ import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.ALiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.AMultiLiteralArgument;
+import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,16 +30,23 @@ public class DuelCommand {
     @Default
     public static void onBaseCommand(CommandSender sender) {
         send(sender, "&8********************** &e&lDUELS HELP &8**********************");
+        send(sender, "&7/duel <player> &8- &7Invite a player to duel with you.");
         send(sender, "&7/duel help &8- &7Displays this help.");
         send(sender, "&7/duel join <type> &8- &7Joins the queue of match type <type>.");
         send(sender, "&7/duel leave &8- &7Leaves the queue you are in.");
-        send(sender, "&7/duel invite <player> &8- &7Invite a player to duel with you.");
         send(sender, "&8**************************************************************");
     }
 
     @Default
     public static void onHelpCommand(CommandSender sender, @ALiteralArgument("help") String arg) {
         onBaseCommand(sender);
+    }
+
+    @Default
+    public static void onDuelCommand(CommandSender sender, @APlayerArgument Player player) {
+        if(!ProfileManager.getProfile(player).isInMatch()) {
+
+        }
     }
 
     @Subcommand("join")

@@ -65,7 +65,7 @@ public class ArenaManager {
     }
 
     public static BlockVector3[] paste(String schematic, int x, int y, int z) {
-        BlockVector3[] minmax = new BlockVector3[2];
+        BlockVector3[] minMax = new BlockVector3[2];
 
         final File file = new File(LuxDuels.getInstance().getDataFolder() + "/schematics/" + schematic + ".schematic");
 
@@ -73,8 +73,8 @@ public class ArenaManager {
         final ClipboardFormat format = ClipboardFormats.findByFile(file);
         try (final ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             clipboard = reader.read();
-            minmax[0] = clipboard.getMinimumPoint();
-            minmax[1] = clipboard.getMaximumPoint();
+            minMax[0] = clipboard.getMinimumPoint();
+            minMax[1] = clipboard.getMaximumPoint();
             try (final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), -1)) {
                 final Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
@@ -85,7 +85,7 @@ public class ArenaManager {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        return minmax;
+        return minMax;
     }
 
     public static void createArena(String name, String schematic, int x, int y, int z) {

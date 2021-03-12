@@ -21,6 +21,7 @@ public class Profile {
     @Getter private final Yaml file;
     @Getter private final UUID UUID;
     @Setter @Getter private Statistics playerStats;
+    @Setter @Getter private boolean isInMatch = false;
 
     private HashMap<Integer, ItemStack> savedInventory = new HashMap<>();
 

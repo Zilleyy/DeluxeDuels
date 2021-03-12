@@ -44,11 +44,10 @@ public class Arena {
     }
 
     public Location[] getSpawnPos() {
-        Location[] pos = new Location[] {
+        return new Location[] {
                 this.cuboid.getCenter(),
                 this.cuboid.getCenter()
         };
-        return pos;
     }
 
 }
