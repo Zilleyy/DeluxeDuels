@@ -7,6 +7,7 @@ import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.queue.Queue;
 import com.prophaze.luxduels.util.Serialize;
+import com.prophaze.luxduels.util.item.Items;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import static com.prophaze.luxduels.util.Messenger.send;
@@ -30,11 +32,17 @@ import static com.prophaze.luxduels.util.Messenger.send;
 public class PlayerListener implements Listener {
 
     @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        player.getInventory().getItemInMainHand();
+        if(player.getInventory().getItemInMainHand().isSimilar(Items.CASUAL)) {
+            // open casual GUI selection
+        }
+    }
+
+    @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Profile profile = ProfileManager.getProfile(event.getEntity().getUniqueId());
-        // Temp testing code
-        profile.getPlayerStats().setDeaths(profile.getPlayerStats().getDeaths() + 1);
-        profile.getPlayerStats().setLosses(profile.getPlayerStats().getLosses() + 1);
         if(MatchManager.isInMatch(profile)) {
             Match match = MatchManager.getMatch(profile);
             if(profile.getUUID().equals(match.getProfileOne().getUUID())) {
@@ -49,9 +57,7 @@ public class PlayerListener implements Listener {
 
         send(player, "&4&lNOTE: &7This is a beta, please report all bugs in our discord.");
         ProfileManager.loadProfile(player.getUniqueId());
-        Profile profile = ProfileManager.getProfile(player);
-        send(player, profile.getPlayerStats().getDeaths() + "");
-        send(player, profile.getPlayerStats().getLosses() + "");
+        Items.setServerItems(player);
     }
 
     @EventHandler
@@ -64,7 +70,8 @@ public class PlayerListener implements Listener {
                 match.setWinner(match.getProfileTwo());
             } else match.setWinner(match.getProfileOne());
         }
-        profile.getFile().set(profile.getUUID().toString() + ".stats", profile.getPlayerStats().toString());
+        //TODO Make statistics work after base version release
+        // profile.getFile().set(profile.getUUID().toString() + ".stats", profile.getPlayerStats().toString());
     }
 
     @EventHandler
