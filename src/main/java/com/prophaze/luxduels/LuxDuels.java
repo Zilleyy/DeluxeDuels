@@ -10,13 +10,11 @@ import com.prophaze.luxduels.kits.KitManager;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.task.MatchHandler;
 import com.prophaze.luxduels.task.QueueHandler;
-import com.prophaze.luxduels.util.Cuboid;
 import com.prophaze.luxduels.util.world.VoidWorld;
 import dev.jorel.commandapi.CommandAPI;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.*;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,7 +45,6 @@ public class LuxDuels extends JavaPlugin {
         this.loadWorlds();
         this.loadFiles();
         this.registerEvents();
-        this.registerSerializables();
         ProfileManager.loadProfiles();
         ArenaManager.loadArenas();
         KitManager.loadServerKits();
@@ -108,10 +105,6 @@ public class LuxDuels extends JavaPlugin {
 
             }
         }
-    }
-
-    private void registerSerializables() {
-        ConfigurationSerialization.registerClass(Cuboid.class);
     }
 
     private void loadRunnables() {

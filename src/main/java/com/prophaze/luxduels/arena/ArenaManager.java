@@ -55,7 +55,7 @@ public class ArenaManager {
 
     public static Arena getArenaContaining(Location location) {
         for(Arena arena : arenas) {
-            if(arena.getCuboid().contains(location)) return arena;
+            if(arena.getCuboid().containsLocation(location)) return arena;
         }
         return null;
     }
@@ -69,8 +69,7 @@ public class ArenaManager {
         return null;
     }
 
-    public static BlockVector3[] paste(int x, int y, int z) {
-        BlockVector3[] minMax = new BlockVector3[2];
+    public static void paste(int x, int y, int z) {
 
         final File file = new File(LuxDuels.getInstance().getDataFolder() + "/schematics/ApOvergrownArena.schematic");
 
@@ -78,8 +77,6 @@ public class ArenaManager {
         final ClipboardFormat format = ClipboardFormats.findByFile(file);
         try (final ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             clipboard = reader.read();
-            minMax[0] = clipboard.getMinimumPoint();
-            minMax[1] = clipboard.getMaximumPoint();
 
             try (final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), -1)) {
                 final Operation operation = new ClipboardHolder(clipboard)
@@ -91,23 +88,12 @@ public class ArenaManager {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        return minMax;
-    }
-
-    public static void createArena() {
-        BlockVector3[] minMax = paste(last, 50, last);
-        Location min = new Location(world, minMax[0].getBlockX(), minMax[0].getBlockY(), minMax[0].getBlockZ());
-        Location max = new Location(world, minMax[1].getBlockX(), minMax[1].getBlockY(), minMax[1].getBlockZ());
-
-        Arena arena = new Arena(min, max);
-        saveArena(arena);
-        addArena(arena);
     }
 
     public static Arena createAndGet() {
-        BlockVector3[] minMax = paste(last, 50, last);
-        Location min = new Location(world, minMax[0].getBlockX(), minMax[0].getBlockY(), minMax[0].getBlockZ());
-        Location max = new Location(world, minMax[1].getBlockX(), minMax[1].getBlockY(), minMax[1].getBlockZ());
+        paste(last, 50, last);
+        Location min = new Location(world, last + .5, 50, last - .5);
+        Location max = new Location(world, last + 132.5, 200, last - 132.5);
 
         Arena arena = new Arena(min, max);
         saveArena(arena);
@@ -116,19 +102,16 @@ public class ArenaManager {
     }
 
     public static void loadArenas() {
-        for(String name : file.keySet()) {
-            Cuboid cuboid = file.getSerializable("Cuboid", Cuboid.class);
-            addArena(name, cuboid);
-        }
+        file.keySet().forEach(key -> addArena(UUID.fromString(key), Cuboid.fromString(file.getString(key + ".Cuboid"))));
     }
 
     public static void saveArena(Arena arena) {
         file.setPathPrefix(arena.getUUID().toString());
-        file.set("Cuboid", arena.getCuboid());
+        file.set("Cuboid", arena.getCuboid().toString());
     }
 
-    public static void addArena(String name, Cuboid cuboid) {
-        addArena(new Arena(name, cuboid));
+    public static void addArena(UUID uuid, Cuboid cuboid) {
+        addArena(new Arena(uuid, cuboid));
     }
 
     public static void addArena(Arena arena) {

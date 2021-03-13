@@ -45,20 +45,32 @@ public class NetheriteKit extends Kit {
         inv.setItem(6, new ItemStack(Material.TOTEM_OF_UNDYING, 1));
         inv.setItem(7, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Swiftness").addPotionEffect(PotionEffectType.SPEED, 90, 2, Color.GRAY).build());
         inv.setItem(8, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Strength").addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 90, 2, Color.RED).build());
+
         for(int i = 9; i < 13; i++) inv.setItem(i, new ItemStack(Material.ENDER_PEARL, 16));
-        for(int i = 13; i < 15; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Resistance")
-                .addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 90, 2, Color.PURPLE).build());
-        for(int i = 15; i < 21; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of the Turtle Master")
+
+        for(int i = 13; i < 15; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of the Turtle Master")
                 .addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 3, Color.GRAY)
                 .addPotionEffect(PotionEffectType.SLOW, 20, 4, Color.GRAY)
                 .build());
-        for(int i = 21; i < 23; i++) inv.setItem(i, new ItemStack(Material.EXPERIENCE_BOTTLE, 64));
-        for(int i = 23; i < 26; i++) inv.setItem(i, new ItemStack(Material.TOTEM_OF_UNDYING));
-        inv.setItem(26, new ItemBuilder(Material.TIPPED_ARROW, 64)
-                .setDisplayName("&fArrow of Weakness")
-                .addPotionEffect(PotionEffectType.WEAKNESS, 109, 1, null).build());
-        inv.setItem(27, new ItemStack(Material.ARROW));
 
+        for(int i = 15; i < 17; i++) inv.setItem(i, new ItemStack(Material.EXPERIENCE_BOTTLE, 64));
+
+        for(int i = 17; i < 20; i++) inv.setItem(i, new ItemStack(Material.TOTEM_OF_UNDYING));
+
+        inv.setItem(20, new ItemBuilder(Material.TIPPED_ARROW, 64)
+                .setDisplayName("&fArrow of Slow Falling")
+                .addPotionEffect(PotionEffectType.SLOW_FALLING,  249, 1, Color.WHITE).build());
+
+        inv.setItem(21, new ItemStack(Material.ARROW));
+
+        for(int i = 22; i < 28; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Swiftness").addPotionEffect(PotionEffectType.SPEED, 90, 2, Color.GRAY).build());
+
+        for(int i = 28; i < 31; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Strength").addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 90, 2, Color.PURPLE).build());
+
+        inv.setItem(31, new ItemStack(Material.GLOWSTONE, 64));
+        inv.setItem(32, new ItemStack(Material.RESPAWN_ANCHOR, 64));
+
+        for(int i = 33; i < 36; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Strength").addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 90, 2, Color.PURPLE).build());
 
         return inv;
     }

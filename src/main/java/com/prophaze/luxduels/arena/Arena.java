@@ -4,6 +4,7 @@ import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.util.Cuboid;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -21,10 +22,10 @@ public class Arena {
     @Getter private UUID UUID;
 
     @Getter @Setter private Match match;
+    @Getter @Setter private Location loc1, loc2;
 
     /**
      * Constructor for Arena, should only be called from the ArenaManager.
-     * @param name
      * @param l1
      * @param l2
      */
@@ -33,25 +34,44 @@ public class Arena {
         this.UUID = java.util.UUID.randomUUID();
     }
 
-    protected Arena(String name, Cuboid cuboid) {
-        this.name = name;
+    protected Arena(UUID uuid, Cuboid cuboid) {
+        this.UUID = uuid;
         this.cuboid = cuboid;
     }
 
+    public void setSpawnPos(Location loc, int profileNumber) {
+        switch (profileNumber) {
+            case 1:
+                loc1 = loc;
+                break;
+            case 2:
+                loc2 = loc;
+                break;
+        }
+    }
+
+    public void saveArena() {
+
+    }
+
     public World getWorld() {
-        return this.cuboid.getWorld();
+        return Bukkit.getWorld(this.cuboid.getWorldName());
     }
 
     public boolean isVacant() {
         return getMatch() == null;
     }
 
-    // TODO - GET THE SPAWN POS' FROM THE FILE
     public Location[] getSpawnPos() {
         return new Location[] {
-                this.cuboid.getCenter(),
-                this.cuboid.getCenter()
+                loc1,
+                loc2
         };
+    }
+
+    @Override
+    public String toString() {
+        return getUUID().toString() + "," + cuboid.toString();
     }
 
 }

@@ -44,9 +44,7 @@ public class DuelCommand {
 
     @Default
     public static void onDuelCommand(CommandSender sender, @APlayerArgument Player player) {
-        if(!ProfileManager.getProfile(player).isInMatch()) {
 
-        }
     }
 
     @Subcommand("join")

@@ -1,5 +1,6 @@
 package com.prophaze.luxduels.event;
 
+import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.command.BuilderCommand;
 import com.prophaze.luxduels.kits.KitManager;
@@ -18,10 +19,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 import static com.prophaze.luxduels.util.Messenger.send;
 
@@ -32,6 +30,15 @@ import static com.prophaze.luxduels.util.Messenger.send;
  */
 
 public class PlayerListener implements Listener {
+
+    @EventHandler
+    public void onMove(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if(ArenaManager.getArenaContaining(event.getBlock().getLocation()) != null) {
+            Arena arena = ArenaManager.getArenaContaining(event.getBlock().getLocation());
+            send(player, "Arena " + arena.getUUID().toString());
+        }
+    }
 
     //TODO Turn into actual listener instead of debug method for kits.
     @EventHandler
