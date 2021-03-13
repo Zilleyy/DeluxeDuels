@@ -94,14 +94,14 @@ public class Queue {
         if(queue.get(matchType) == null) return null;
         if(queue.get(matchType).size() < 2) return null;
         Match returnMatch = null;
+        Profile p1, p2;
+        p1 = queue.get(matchType).get(0);
+        p2 = queue.get(matchType).get(1);
+        queue.get(matchType).remove(p1);
+        queue.get(matchType).remove(p2);
         if(ArenaManager.getVacant() == null) {
-
+            returnMatch = MatchManager.createAndGet(ArenaManager.createAndGet(), matchType, p1, p2);
         } else {
-            Profile p1, p2;
-            p1 = queue.get(matchType).get(0);
-            p2 = queue.get(matchType).get(1);
-            queue.get(matchType).remove(p1);
-            queue.get(matchType).remove(p2);
             returnMatch = MatchManager.createAndGet(ArenaManager.getVacant(), matchType, p1, p2);
         }
         return returnMatch;

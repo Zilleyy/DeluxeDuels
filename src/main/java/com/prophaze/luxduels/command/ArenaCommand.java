@@ -1,5 +1,6 @@
 package com.prophaze.luxduels.command;
 
+import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.arena.ArenaManager;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -22,9 +23,10 @@ import org.bukkit.entity.Player;
 public class ArenaCommand {
 
     @Subcommand("create")
-    public static void createArenaCommand(CommandSender sender, @AStringArgument String name, @AStringArgument String schematic) {
+    public static void createArenaCommand(CommandSender sender) {
         Player player = (Player) sender;
-        ArenaManager.createArena(name, schematic);
+        Arena arena = ArenaManager.createAndGet();
+        player.teleport(arena.getSpawnPos()[0]);
     }
 
     @Subcommand("world")

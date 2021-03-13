@@ -118,8 +118,8 @@ public class LuxDuels extends JavaPlugin {
         this.queuehandler = new QueueHandler();
         this.matchhandler = new MatchHandler();
 
-        this.queuehandler.runTaskTimerAsynchronously(this, 0L, 0L);
-        this.matchhandler.runTaskTimerAsynchronously(this, 0L, 0L);
+        this.queuehandler.runTaskTimer(this, 0L, 0L);
+        this.matchhandler.runTaskTimer(this, 0L, 0L);
     }
 
 }

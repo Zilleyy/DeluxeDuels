@@ -69,10 +69,10 @@ public class ArenaManager {
         return null;
     }
 
-    public static BlockVector3[] paste(String schematic, int x, int y, int z) {
+    public static BlockVector3[] paste(int x, int y, int z) {
         BlockVector3[] minMax = new BlockVector3[2];
 
-        final File file = new File(LuxDuels.getInstance().getDataFolder() + "/schematics/" + schematic + ".schematic");
+        final File file = new File(LuxDuels.getInstance().getDataFolder() + "/schematics/ApOvergrownArena.schematic");
 
         final Clipboard clipboard;
         final ClipboardFormat format = ClipboardFormats.findByFile(file);
@@ -81,7 +81,7 @@ public class ArenaManager {
             minMax[0] = clipboard.getMinimumPoint();
             minMax[1] = clipboard.getMaximumPoint();
 
-            try (final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), 5000)) {
+            try (final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), -1)) {
                 final Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
                         .to(BlockVector3.at(x, y, z))
@@ -94,14 +94,25 @@ public class ArenaManager {
         return minMax;
     }
 
-    public static void createArena(String name, String schematic) {
-        BlockVector3[] minMax = paste(schematic, last, 50, last);
+    public static void createArena() {
+        BlockVector3[] minMax = paste(last, 50, last);
         Location min = new Location(world, minMax[0].getBlockX(), minMax[0].getBlockY(), minMax[0].getBlockZ());
         Location max = new Location(world, minMax[1].getBlockX(), minMax[1].getBlockY(), minMax[1].getBlockZ());
 
-        Arena arena = new Arena(name, min, max);
+        Arena arena = new Arena(min, max);
         saveArena(arena);
         addArena(arena);
+    }
+
+    public static Arena createAndGet() {
+        BlockVector3[] minMax = paste(last, 50, last);
+        Location min = new Location(world, minMax[0].getBlockX(), minMax[0].getBlockY(), minMax[0].getBlockZ());
+        Location max = new Location(world, minMax[1].getBlockX(), minMax[1].getBlockY(), minMax[1].getBlockZ());
+
+        Arena arena = new Arena(min, max);
+        saveArena(arena);
+        addArena(arena);
+        return arena;
     }
 
     public static void loadArenas() {

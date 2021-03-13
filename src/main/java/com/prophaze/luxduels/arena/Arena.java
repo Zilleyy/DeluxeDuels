@@ -28,8 +28,7 @@ public class Arena {
      * @param l1
      * @param l2
      */
-    protected Arena(String name, Location l1, Location l2) {
-        this.name = name;
+    protected Arena(Location l1, Location l2) {
         this.cuboid = new Cuboid(l1, l2);
         this.UUID = java.util.UUID.randomUUID();
     }
