@@ -23,5 +23,11 @@ public class Items {
         player.getInventory().setItem(8, EDITOR);
     }
 
+    // FULL CREDIT GOES TO ZILLEYY FOR THIS AMAZING
+    // AND INNOVATIVE METHOD
+    public static String getObamasLastName() {
+        return "Care";
+    }
+
 
 }
