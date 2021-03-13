@@ -30,21 +30,22 @@ public class DuelCommand$Command {
 
         new CommandAPICommand("duel")
             .withAliases("duels")
-            .withArguments(new PlayerArgument("player"))
+            .withArguments(new PlayerArgument("target"))
+            .withArguments(new MultiLiteralArgument("SHIELD", "NETHERITE", "DIAMOND", "OVERPOWERED", "POTION", "UHC"))
             .executes((sender, args) -> {
-                DuelCommand.onDuelCommand(sender, (Player) args[0]);
+                DuelCommand.onDuelCommand(sender, (Player) args[0], (String) args[1]);
             })
             .register();
 
         new CommandAPICommand("duel")
             .withArguments(
-                new MultiLiteralArgument("join")
+                new MultiLiteralArgument("accept")
                     .setListed(false)
             )
             .withAliases("duels")
-            .withArguments(new MultiLiteralArgument("SHIELD", "NETHERITE", "DIAMOND", "OVERPOWERED", "POTION", "UHC", "CUSTOM"))
+            .withArguments(new PlayerArgument("target"))
             .executes((sender, args) -> {
-                DuelCommand.onJoinCommand(sender, (String) args[0]);
+                DuelCommand.onDuelAcceptCommand(sender, (Player) args[0]);
             })
             .register();
 

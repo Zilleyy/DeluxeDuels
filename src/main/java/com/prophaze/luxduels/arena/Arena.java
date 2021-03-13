@@ -17,7 +17,6 @@ import java.util.UUID;
  */
 public class Arena {
 
-    @Getter private String name;
     @Getter private Cuboid cuboid;
     @Getter private UUID UUID;
 

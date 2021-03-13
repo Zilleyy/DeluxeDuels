@@ -1,9 +1,14 @@
 package com.prophaze.luxduels.command;
 
-import com.prophaze.luxduels.match.MatchType;
+import com.prophaze.luxduels.arena.ArenaManager;
+import com.prophaze.luxduels.kits.Kit;
+import com.prophaze.luxduels.kits.KitManager;
+import com.prophaze.luxduels.match.Match;
+import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.queue.Queue;
+import com.prophaze.luxduels.util.Messenger;
 import dev.jorel.commandapi.annotations.Alias;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -25,14 +30,12 @@ import static com.prophaze.luxduels.util.Messenger.send;
 @Alias("duels")
 public class DuelCommand {
 
-    private String[] types = MatchType.getStringValues();
-
     @Default
     public static void onBaseCommand(CommandSender sender) {
         send(sender, "&8********************** &e&lDUELS HELP &8**********************");
         send(sender, "&7/duel <player> &8- &7Invite a player to duel with you.");
+        send(sender, "&7/duel accept &8- &7Accepts recent duel invite.");
         send(sender, "&7/duel help &8- &7Displays this help.");
-        send(sender, "&7/duel join <type> &8- &7Joins the queue of match type <type>.");
         send(sender, "&7/duel leave &8- &7Leaves the queue you are in.");
         send(sender, "&8**************************************************************");
     }
@@ -43,19 +46,17 @@ public class DuelCommand {
     }
 
     @Default
-    public static void onDuelCommand(CommandSender sender, @APlayerArgument Player player) {
+    public static void onDuelCommand(CommandSender sender, @APlayerArgument Player target,  @AMultiLiteralArgument({"SHIELD", "NETHERITE", "DIAMOND", "OVERPOWERED", "POTION", "UHC"}) String arg) {
+        Player player = (Player) sender;
+        Profile senderProfile = ProfileManager.getProfile(player);
 
     }
 
-    @Subcommand("join")
-    public static void onJoinCommand(CommandSender sender, @AMultiLiteralArgument({"SHIELD", "NETHERITE", "DIAMOND", "OVERPOWERED", "POTION", "UHC", "CUSTOM"}) String arg) {
-        Profile profile = ProfileManager.getProfile(((Player) sender).getUniqueId());
-        if(!Queue.inQueue(profile)) {
-            Queue.addProfile(MatchType.valueOf(arg), profile);
-            send(sender, "&7You joined the queue for &e" + arg + "&7. &8(&7" + Queue.getPositionOf(profile) + "&8/&7" + Queue.getSize(MatchType.valueOf(arg)) + "&8)");
-        } else {
-            send(sender, "&7You are already in the queue! Do &e/duel leave &7to leave the queue.");
-        }
+    @Subcommand("accept")
+    public static void onDuelAcceptCommand(CommandSender sender, @APlayerArgument Player target) {
+        Match match = MatchManager.getMatch(ProfileManager.getProfile(target));
+        Player player = (Player)sender;
+        match.setProfileTwo(ProfileManager.getProfile(player));
     }
 
     @Subcommand("leave")

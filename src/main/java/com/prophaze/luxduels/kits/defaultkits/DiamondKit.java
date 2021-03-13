@@ -12,7 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-public class NetheriteKit extends Kit {
+public class DiamondKit extends Kit {
 
     public void apply(Player player) {
         player.getInventory().setHeldItemSlot(0);
@@ -22,12 +22,12 @@ public class NetheriteKit extends Kit {
     }
 
     public ItemStack kitIcon() {
-        return new ItemBuilder(Material.END_CRYSTAL).setDisplayName("&5Netherite").build();
+        return new ItemBuilder(Material.END_CRYSTAL).setDisplayName("&bDiamond Crystal").build();
     }
 
     public Inventory kitInventory() {
         Inventory inv = Bukkit.createInventory(null, InventoryType.PLAYER);
-        inv.setItem(0, new ItemBuilder(Material.NETHERITE_SWORD)
+        inv.setItem(0, new ItemBuilder(Material.DIAMOND_SWORD)
                 .addEnchantment(Enchantment.DAMAGE_ALL, 5)
                 .addEnchantment(Enchantment.KNOCKBACK, 2)
                 .addEnchantment(Enchantment.SWEEPING_EDGE, 3).build());
@@ -67,16 +67,11 @@ public class NetheriteKit extends Kit {
 
         for(int i = 28; i < 31; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Strength").addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 90, 2, Color.PURPLE).build());
 
-        inv.setItem(31, new ItemStack(Material.GLOWSTONE, 64));
-        inv.setItem(32, new ItemStack(Material.RESPAWN_ANCHOR, 64));
-
-        for(int i = 33; i < 36; i++) inv.setItem(i, new ItemBuilder(Material.SPLASH_POTION).setDisplayName("&fSplash Potion of Strength").addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 90, 2, Color.PURPLE).build());
-
         return inv;
     }
 
     public String getKitName() {
-        return "Netherite Crystal";
+        return "Diamond";
     }
 
     public ItemStack offHand() {
@@ -85,23 +80,22 @@ public class NetheriteKit extends Kit {
 
     public ItemStack[] armorContents() {
         ItemStack[] contents = new ItemStack[4];
-        contents[3] = new ItemBuilder(Material.NETHERITE_HELMET)
+        contents[3] = new ItemBuilder(Material.DIAMOND_HELMET)
                 .addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
                 .addEnchantment(Enchantment.MENDING, 1)
                 .addEnchantment(Enchantment.DURABILITY, 3).build();
-        contents[2] = new ItemBuilder(Material.NETHERITE_CHESTPLATE)
+        contents[2] = new ItemBuilder(Material.DIAMOND_CHESTPLATE)
                 .addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
                 .addEnchantment(Enchantment.MENDING, 1)
                 .addEnchantment(Enchantment.DURABILITY, 3).build();
-        contents[1] = new ItemBuilder(Material.NETHERITE_LEGGINGS)
+        contents[1] = new ItemBuilder(Material.DIAMOND_LEGGINGS)
                 .addEnchantment(Enchantment.PROTECTION_EXPLOSIONS, 4)
                 .addEnchantment(Enchantment.MENDING, 1)
                 .addEnchantment(Enchantment.DURABILITY, 3).build();
-        contents[0] = new ItemBuilder(Material.NETHERITE_BOOTS)
+        contents[0] = new ItemBuilder(Material.DIAMOND_BOOTS)
                 .addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
                 .addEnchantment(Enchantment.MENDING, 1)
                 .addEnchantment(Enchantment.DURABILITY, 3).build();
         return contents;
     }
-
 }

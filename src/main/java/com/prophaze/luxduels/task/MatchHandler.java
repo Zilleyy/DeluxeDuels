@@ -15,7 +15,7 @@ public class MatchHandler extends BukkitRunnable {
     public void run() {
         for (Match match : MatchManager.getMatches()) {
             if(match.getMatchState() != Match.MatchState.WAITING) return;
-            match.start();
+            if(match.getProfileTwo() != null) match.start();
         }
     }
 

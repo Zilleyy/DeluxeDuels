@@ -1,6 +1,7 @@
 package com.prophaze.luxduels.match;
 
 import com.prophaze.luxduels.arena.Arena;
+import com.prophaze.luxduels.kits.Kit;
 import com.prophaze.luxduels.profile.Profile;
 import lombok.Getter;
 
@@ -16,12 +17,14 @@ public class MatchManager {
 
     @Getter private static final List<Match> matches = new ArrayList<>();
 
-    public static void create(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
-        matches.add(new Match(arena, type, profileOne, profileTwo));
+    public static Match createDuelMatch(Arena arena, Kit kit, Profile profileOne) {
+        Match match = new Match(arena, kit, profileOne);
+        matches.add(match);
+        return match;
     }
 
-    public static Match createAndGet(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
-        Match result = new Match(arena, type, profileOne, profileTwo);
+    public static Match createAndGet(Arena arena, Kit kit, Profile profileOne, Profile profileTwo) {
+        Match result = new Match(arena, kit, profileOne, profileTwo);
         matches.add(result);
         return result;
     }

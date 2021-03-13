@@ -12,6 +12,7 @@ public class Items {
     public static final ItemStack PARTY = new ItemBuilder(Material.GOLDEN_AXE).setDisplayName(Messenger.color("&dParty Fights")).build();
     public static final ItemStack SPECTATOR = new ItemBuilder(Material.CLOCK).setDisplayName(Messenger.color("&6Spectator Mode")).build();
     public static final ItemStack EDITOR = new ItemBuilder(Material.ENCHANTED_BOOK).setDisplayName(Messenger.color("&7Kit Editor")).build();
+    public static final ItemStack LEAVE_QUEUE = ItemBuilder.of(Material.ORANGE_DYE).setDisplayName("&c&lLeave Queue &7(click)").setGlowing().build();
 
     public static void setServerItems(Player player) {
         player.getInventory().clear();
@@ -21,12 +22,6 @@ public class Items {
         player.getInventory().setItem(2, PARTY);
         player.getInventory().setItem(7, SPECTATOR);
         player.getInventory().setItem(8, EDITOR);
-    }
-
-    // FULL CREDIT GOES TO ZILLEYY FOR THIS AMAZING
-    // AND INNOVATIVE METHOD
-    public static String getObamasLastName() {
-        return "Care";
     }
 
 

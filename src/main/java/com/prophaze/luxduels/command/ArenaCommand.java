@@ -36,9 +36,13 @@ public class ArenaCommand {
         Player player = (Player) sender;
         Arena arena = ArenaManager.getArenaContaining(player.getLocation());
         if(arena != null) {
-            arena.setSpawnPos(player.getLocation(), profileNumber);
-            send(sender, "Set location " + profileNumber + " to current location");
-        }
+            if(profileNumber > 0 && profileNumber < 3) {
+                arena.setSpawnPos(player.getLocation(), profileNumber);
+                send(sender, "Set location " + profileNumber + " to current location");
+            } else {
+                send(sender, "Only two spawn locations may be set.");
+            }
+        } else send(sender, "You must be in an Arena to set its spawnpoint.");
     }
 
     @Subcommand("world")

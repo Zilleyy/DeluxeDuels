@@ -2,6 +2,7 @@ package com.prophaze.luxduels.profile;
 
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.file.Yaml;
+import com.prophaze.luxduels.match.Match;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ public class Profile {
     @Getter private final UUID UUID;
     @Setter @Getter private Statistics playerStats;
     @Setter @Getter private boolean isInMatch = false;
+    @Setter @Getter private Match currentMatch;
 
     private HashMap<Integer, ItemStack> savedInventory = new HashMap<>();
 

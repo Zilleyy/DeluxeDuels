@@ -1,7 +1,8 @@
 package com.prophaze.luxduels.task;
 
+import com.prophaze.luxduels.kits.Kit;
+import com.prophaze.luxduels.kits.KitManager;
 import com.prophaze.luxduels.match.Match;
-import com.prophaze.luxduels.match.MatchType;
 import com.prophaze.luxduels.queue.Queue;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -14,9 +15,9 @@ public class QueueHandler extends BukkitRunnable {
 
     @Override
     public void run() {
-        for(MatchType type : MatchType.values()) {
-            if(Queue.hasNext(type)) {
-                Match match = Queue.next(type);
+        for(Kit kit : KitManager.serverKits) {
+            if(Queue.hasNext(kit)) {
+                Match match = Queue.next(kit);
                 match.getProfileOne().getPlayer().teleport(match.getArena().getSpawnPos()[0]);
                 match.getProfileTwo().getPlayer().teleport(match.getArena().getSpawnPos()[1]);
             }

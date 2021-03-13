@@ -12,6 +12,7 @@ import com.prophaze.luxduels.task.MatchHandler;
 import com.prophaze.luxduels.task.QueueHandler;
 import com.prophaze.luxduels.util.world.VoidWorld;
 import dev.jorel.commandapi.CommandAPI;
+import fr.minuskube.inv.InventoryManager;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.*;
@@ -23,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 public class LuxDuels extends JavaPlugin {
 
     @Getter public static LuxDuels instance;
+    public static InventoryManager inventoryManager;
 
     private QueueHandler queuehandler;
     private MatchHandler matchhandler;
@@ -49,6 +51,8 @@ public class LuxDuels extends JavaPlugin {
         ArenaManager.loadArenas();
         KitManager.loadServerKits();
         this.loadRunnables();
+        inventoryManager = new InventoryManager(this);
+        inventoryManager.init();
     }
 
     private void loadWorlds() {

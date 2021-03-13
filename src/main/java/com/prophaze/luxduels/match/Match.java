@@ -2,9 +2,11 @@ package com.prophaze.luxduels.match;
 
 import com.google.common.collect.Lists;
 import com.prophaze.luxduels.arena.Arena;
+import com.prophaze.luxduels.kits.Kit;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.task.Countdown;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,9 +26,10 @@ public class Match {
 
     @Getter private final Arena arena;
     @Getter private final MatchSettings matchSettings;
-    @Getter private final Profile profileOne, profileTwo;
-    @Getter private final MatchType type;
+    @Getter private final Profile profileOne;
+    @Getter private final Kit kit;
     @Getter private MatchState matchState;
+    @Getter @Setter private Profile profileTwo;
 
     private Profile winner;
 
@@ -35,9 +38,19 @@ public class Match {
     // Key = the material it was before it was modified
     private List<SimpleEntry<Material, Location>> blocks = new ArrayList<>();
 
-    protected Match(Arena arena, MatchType type, Profile profileOne, Profile profileTwo) {
+    protected Match(Arena arena, Kit kit, Profile profileOne) {
         this.arena = arena;
-        this.type = type;
+        this.kit = kit;
+        this.profileOne = profileOne;
+
+        this.matchSettings = new MatchSettings();
+        this.spectators = Lists.newArrayList();
+        this.matchState = MatchState.WAITING;
+    }
+
+    protected Match(Arena arena, Kit kit, Profile profileOne, Profile profileTwo) {
+        this.arena = arena;
+        this.kit = kit;
         this.profileOne = profileOne;
         this.profileTwo = profileTwo;
 
@@ -55,8 +68,8 @@ public class Match {
     }
 
     public void setWinner(Profile winner) {
-        if(!matchState.equals(MatchState.FINISHED)) setMatchState(MatchState.FINISHED);
         this.winner = winner;
+        end();
     }
 
     public void setMatchState(MatchState matchState) {
@@ -110,6 +123,8 @@ public class Match {
     public void start() {
         this.matchState = MatchState.STARTING;
         new Countdown("&7Matching starting in &e{0} &7seconds...", "&e{0}&7...", "&7The game has started, GLHF!", 10, profileOne.getPlayer(), profileTwo.getPlayer());
+        profileOne.getPlayer().teleport(arena.getLoc1());
+        profileOne.getPlayer().teleport(arena.getLoc2());
     }
 
     public void end() {

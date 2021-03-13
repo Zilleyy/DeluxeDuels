@@ -22,7 +22,7 @@ public class OverpoweredKit extends Kit {
     }
 
     public ItemStack kitIcon() {
-        return new ItemBuilder(Material.DIAMOND_SWORD).setDisplayName("&eOP Sword")
+        return new ItemBuilder(Material.DIAMOND_SWORD).setDisplayName("&eOverpowered")
                 .addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4)
                 .addEnchantment(Enchantment.DAMAGE_ALL, 5).build();
     }
@@ -37,7 +37,7 @@ public class OverpoweredKit extends Kit {
     }
 
     public String getKitName() {
-        return "Overpowered";
+        return "OP Sword";
     }
 
     public ItemStack offHand() {

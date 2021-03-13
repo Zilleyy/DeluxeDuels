@@ -1,24 +1,30 @@
 package com.prophaze.luxduels.event;
 
+import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.command.BuilderCommand;
-import com.prophaze.luxduels.kits.KitManager;
+import com.prophaze.luxduels.inventory.Inventories;
 import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.queue.Queue;
 import com.prophaze.luxduels.util.item.Items;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 
 import static com.prophaze.luxduels.util.Messenger.send;
@@ -43,23 +49,30 @@ public class PlayerListener implements Listener {
     //TODO Turn into actual listener instead of debug method for kits.
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        player.getInventory().getItemInMainHand();
-        if (player.getInventory().getItemInMainHand().isSimilar(Items.CASUAL)) {
-            KitManager.getKit("Overpowered").apply(player);
-        } else if (player.getInventory().getItemInMainHand().isSimilar(Items.COMP)) {
-            KitManager.getKit("Shield").apply(player);
-        } else if (player.getInventory().getItemInMainHand().isSimilar(Items.PARTY)) {
-            KitManager.getKit("Netherite").apply(player);
-        } else if (player.getInventory().getItemInMainHand().isSimilar(Items.EDITOR)) {
-            KitManager.getKit("Potion").apply(player);
-        }else if (player.getInventory().getItemInMainHand().isSimilar(Items.SPECTATOR)) {
-            KitManager.getKit("UHC").apply(player);
+        Profile player = ProfileManager.getProfile(event.getPlayer());
+        player.getPlayer().getInventory().getItemInMainHand();
+        if (player.getPlayer().getInventory().getItemInMainHand().isSimilar(Items.CASUAL)) {
+            // Open GUI to pick Kit
+            Inventories.MatchTypeInventory.open(player.getPlayer());
+        } else if (player.getPlayer().getInventory().getItemInMainHand().isSimilar(Items.COMP)) {
+            //TODO Develop when enabled after beta
+        } else if (player.getPlayer().getInventory().getItemInMainHand().isSimilar(Items.PARTY)) {
+            //TODO Develop when enabled after beta
+        } else if (player.getPlayer().getInventory().getItemInMainHand().isSimilar(Items.EDITOR)) {
+            //TODO Develop when enabled after beta
+        }else if (player.getPlayer().getInventory().getItemInMainHand().isSimilar(Items.SPECTATOR)) {
+            // Open spectator GUI
+        } else if (player.getPlayer().getInventory().getItemInMainHand().isSimilar(Items.LEAVE_QUEUE)) {
+            Queue.removeProfile(player);
+            Items.setServerItems(player.getPlayer());
+            send(player, "&cYou have left the matchmaking Queue");
         }
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        event.getDrops().clear();
+        event.setDroppedExp(0);
         Profile profile = ProfileManager.getProfile(event.getEntity().getUniqueId());
         if (MatchManager.isInMatch(profile)) {
             Match match = MatchManager.getMatch(profile);
@@ -68,6 +81,14 @@ public class PlayerListener implements Listener {
             }
             match.setWinner(match.getProfileTwo());
         }
+        Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> {
+            event.getEntity().spigot().respawn();
+            if(BuilderCommand.getBuilders().contains(profile.getUUID())) {
+
+            } else {
+                Items.setServerItems(profile.getPlayer());
+            }
+        }, 5L);
     }
 
     @EventHandler
@@ -139,9 +160,37 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         Profile profile = ProfileManager.getProfile(event.getPlayer().getUniqueId());
-        if (MatchManager.isInMatch(profile) || Queue.inQueue(profile)) {
-            event.setCancelled(true);
+        event.setCancelled(true);
+        if(BuilderCommand.getBuilders().contains(profile.getUUID())) {
+            event.setCancelled(false);
         }
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        event.setResult(Event.Result.DENY);
+        Player player = (Player) event.getWhoClicked();
+        if(BuilderCommand.getBuilders().contains(player.getUniqueId()) || MatchManager.isInMatch(ProfileManager.getProfile(player))) {
+            event.setResult(Event.Result.ALLOW);
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if(event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            event.setCancelled(true);
+            if(BuilderCommand.getBuilders().contains(player.getUniqueId()) || MatchManager.isInMatch(ProfileManager.getProfile(player)))
+                event.setCancelled(false);
+         }
+    }
+
+    @EventHandler
+    public void onHunger(FoodLevelChangeEvent event) {
+        Player player = (Player)event.getEntity();
+        event.setCancelled(true);
+        if(BuilderCommand.getBuilders().contains(player.getUniqueId()) || MatchManager.isInMatch(ProfileManager.getProfile(player)))
+            event.setCancelled(false);
     }
 
 }
