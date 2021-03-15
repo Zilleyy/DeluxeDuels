@@ -17,8 +17,9 @@ import java.util.UUID;
  */
 public class Arena {
 
-    @Getter private Cuboid cuboid;
-    @Getter private UUID UUID;
+    @Getter private final Cuboid cuboid;
+    @Getter private final UUID UUID;
+    @Getter private String schemName;
 
     @Getter @Setter private Match match;
     @Getter @Setter private Location loc1, loc2;
@@ -28,14 +29,16 @@ public class Arena {
      * @param l1
      * @param l2
      */
-    protected Arena(Location l1, Location l2) {
+    protected Arena(Location l1, Location l2, String schemName) {
         this.cuboid = new Cuboid(l1, l2);
         this.UUID = java.util.UUID.randomUUID();
+        this.schemName = schemName;
     }
 
-    protected Arena(UUID uuid, Cuboid cuboid) {
+    protected Arena(UUID uuid, Cuboid cuboid, String schemName) {
         this.UUID = uuid;
         this.cuboid = cuboid;
+        this.schemName = schemName;
     }
 
     public void setSpawnPos(Location loc, int profileNumber) {
@@ -49,8 +52,8 @@ public class Arena {
         }
     }
 
-    public void saveArena() {
-
+    public boolean isComplete() {
+        return loc1 != null && loc2 != null;
     }
 
     public World getWorld() {

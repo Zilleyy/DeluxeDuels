@@ -1,21 +1,29 @@
 package com.prophaze.luxduels.match;
 
 import com.google.common.collect.Lists;
+import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.arena.Arena;
+import com.prophaze.luxduels.event.PlayerListener;
 import com.prophaze.luxduels.kits.Kit;
 import com.prophaze.luxduels.profile.Profile;
-import com.prophaze.luxduels.task.Countdown;
+import com.prophaze.luxduels.task.CountdownTimer;
+import com.prophaze.luxduels.util.Constants;
+import com.prophaze.luxduels.util.Messenger;
+import com.prophaze.luxduels.util.item.Items;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.AbstractMap.*;
 
-import static com.prophaze.luxduels.util.Messenger.color;
-import static com.prophaze.luxduels.util.Messenger.send;
+import static com.prophaze.luxduels.util.Messenger.*;
 
 /**
  * Author: Zilleyy, ProPhaze
@@ -33,7 +41,7 @@ public class Match {
 
     private Profile winner;
 
-    private List<UUID> spectators;
+    private final List<UUID> spectators;
 
     // Key = the material it was before it was modified
     private List<SimpleEntry<Material, Location>> blocks = new ArrayList<>();
@@ -120,43 +128,71 @@ public class Match {
         return null;
     }
 
+    public boolean canStart() {
+        return profileOne != null && profileTwo != null;
+    }
     public void start() {
-        this.matchState = MatchState.STARTING;
-        new Countdown("&7Matching starting in &e{0} &7seconds...", "&e{0}&7...", "&7The game has started, GLHF!", 10, profileOne.getPlayer(), profileTwo.getPlayer());
-        profileOne.getPlayer().teleport(arena.getLoc1());
-        profileOne.getPlayer().teleport(arena.getLoc2());
+        if(canStart()) {
+            this.matchState = MatchState.STARTING;
+            CountdownTimer timer = new CountdownTimer(LuxDuels.getInstance(),
+                    6,
+                    () -> {
+                // Locations need to be setup beforehand
+                        profileOne.getPlayer().teleport(getArena().getLoc1());
+                        profileTwo.getPlayer().teleport(getArena().getLoc2());
+                        PlayerListener.cantMove.add(profileOne);
+                        PlayerListener.cantMove.add(profileTwo);
+                        kit.apply(profileOne.getPlayer());
+                        kit.apply(profileTwo.getPlayer());
+                    },
+                    () -> {
+                        PlayerListener.cantMove.remove(profileOne);
+                        PlayerListener.cantMove.remove(profileTwo);
+                    },
+                    (t) -> {
+                        sendTitle(profileOne.getPlayer(), t.getSecondsLeft() + "","");
+                        sendTitle(profileTwo.getPlayer(), t.getSecondsLeft() + "","");
+                    }
+            );
+            timer.scheduleTimer();
+        }
     }
 
     public void end() {
         this.matchState = MatchState.FINISHED;
-
-        String placeholder = this.matchState.replace(this.getWinner().getPlayer().getName());
+        NumberFormat formatter = new DecimalFormat("#0.0");
+        String placeholder = Messenger.color("&bWinner: &a%name% &7(&c❤ %hearts_left%&7)"
+                .replace("%name%", winner.getPlayer().getName())
+                .replace("%hearts_left%", formatter.format(winner.getPlayer().getHealth() / 2)));
         send(this.profileOne.getPlayer(), placeholder);
         send(this.profileTwo.getPlayer(), placeholder);
 
         resetBlocks();
 
-        this.arena.setMatch(null);
+        Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> {
+            profileOne.getPlayer().teleport(Constants.spawnLocation);
+            profileTwo.getPlayer().teleport(Constants.spawnLocation);
+            profileOne.getPlayer().setHealth(20.0);
+            profileTwo.getPlayer().setHealth(20.0);
+
+            Items.setServerItems(profileOne.getPlayer());
+            Items.setServerItems(profileTwo.getPlayer());
+
+            this.arena.setMatch(null);
+            MatchManager.getMatches().remove(this);
+        }, 2L);
+
+
     }
 
     /**
      * This enum represents the possible states of the match.
      */
     public enum MatchState {
-        WAITING("Waiting to start the match..."),
-        STARTING("Starting match in {0} seconds."),
-        PLAYING("Match started, good luck!"),
-        FINISHED("GG! {0} won the match.");
-
-        @Getter private String message;
-
-        MatchState(String message) {
-            this.message = color(message);
-        }
-
-        public String replace(String var) {
-            return this.message.replaceAll("[{0}]", var);
-        }
+        WAITING(),
+        STARTING(),
+        PLAYING(),
+        FINISHED();
 
     }
 

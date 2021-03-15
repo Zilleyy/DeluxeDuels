@@ -17,9 +17,8 @@ public class QueueHandler extends BukkitRunnable {
     public void run() {
         for(Kit kit : KitManager.serverKits) {
             if(Queue.hasNext(kit)) {
-                Match match = Queue.next(kit);
-                match.getProfileOne().getPlayer().teleport(match.getArena().getSpawnPos()[0]);
-                match.getProfileTwo().getPlayer().teleport(match.getArena().getSpawnPos()[1]);
+                Match match = Queue.next(kit, "ApOvergrownArena");
+
             }
         }
     }

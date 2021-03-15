@@ -19,7 +19,7 @@ public class Queue {
 
     public static void addProfile(Kit kit, Profile profile) {
         LinkedList<Profile> list;
-        if(queue.containsKey(kit)) list = new LinkedList<>();
+        if(queue.containsKey(kit)) list = queue.get(kit);
         else list = Lists.newLinkedList();
 
         list.add(profile);
@@ -91,17 +91,17 @@ public class Queue {
         return true;
     }
 
-    public static Match next(Kit kit) {
+    public static Match next(Kit kit, String schemName) {
         if(queue.get(kit) == null) return null;
         if(queue.get(kit).size() < 2) return null;
-        Match returnMatch = null;
+        Match returnMatch;
         Profile p1, p2;
         p1 = queue.get(kit).get(0);
         p2 = queue.get(kit).get(1);
         queue.get(kit).remove(p1);
         queue.get(kit).remove(p2);
         if(ArenaManager.getVacant() == null) {
-            returnMatch = MatchManager.createAndGet(ArenaManager.createAndGet(), kit, p1, p2);
+            returnMatch = MatchManager.createAndGet(ArenaManager.createAndGet(schemName), kit, p1, p2);
         } else {
             returnMatch = MatchManager.createAndGet(ArenaManager.getVacant(), kit, p1, p2);
         }

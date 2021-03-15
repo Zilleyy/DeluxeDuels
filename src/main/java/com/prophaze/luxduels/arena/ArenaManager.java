@@ -1,19 +1,16 @@
 package com.prophaze.luxduels.arena;
 
+import com.boydti.fawe.FaweAPI;
+import com.google.common.collect.Lists;
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.file.Yaml;
+import com.prophaze.luxduels.kits.Kit;
 import com.prophaze.luxduels.util.Cuboid;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.session.ClipboardHolder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -23,7 +20,6 @@ import org.bukkit.World;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,11 +32,11 @@ public class ArenaManager {
 
     private static final Yaml file = LuxDuels.getInstance().getArenaFile();
 
-    private static final List<Arena> arenas = new ArrayList<>();
+    private static final List<Arena> arenas = Lists.newArrayList();
 
-    private static final World world = Bukkit.getWorld("arenas");
+    private static final World world = Bukkit.getWorld("world");
 
-    @Getter @Setter private static int last = 0;
+    @Getter @Setter private static int last = 1000;
 
     /**
      * @param uuid The uuid used to identify the arena.
@@ -69,49 +65,65 @@ public class ArenaManager {
         return null;
     }
 
-    public static void paste(int x, int y, int z) {
+    public static void setString(String path, String string) {
+        file.set(path, string);
+    }
 
-        final File file = new File(LuxDuels.getInstance().getDataFolder() + "/schematics/ApOvergrownArena.schematic");
+    // TODO
+    public static boolean paste(String schemName, int x, int y, int z) {
 
-        final Clipboard clipboard;
-        final ClipboardFormat format = ClipboardFormats.findByFile(file);
-        try (final ClipboardReader reader = format.getReader(new FileInputStream(file))) {
-            clipboard = reader.read();
+        final File file = new File(LuxDuels.getInstance().getDataFolder() + "/schematics/" + schemName + ".schematic");
+        if(file.isFile()) {
+            ClipboardReader reader;
+            final ClipboardFormat format = ClipboardFormats.findByFile(file);
+            BlockVector3 vec = BlockVector3.at(x,y,z);
 
-            try (final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(world), -1)) {
-                final Operation operation = new ClipboardHolder(clipboard)
-                        .createPaste(editSession)
-                        .to(BlockVector3.at(x, y, z))
-                        .build();
-                Operations.complete(operation);
+            try {
+                reader = format.getReader(new FileInputStream(file));
+                Clipboard clipboard;
+                clipboard = reader.read();
+                clipboard.paste(FaweAPI.getWorld(world.getName()), vec, true);
+                clipboard.relight(x,y,z);
+                return true;
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                return false;
             }
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } else  {
+            System.out.println("Error pasting schematic " + schemName);
+            return false;
         }
     }
 
-    public static Arena createAndGet() {
-        paste(last, 50, last);
-        Location min = new Location(world, last + .5, 50, last - .5);
-        Location max = new Location(world, last + 132.5, 200, last - 132.5);
+    public static Arena createAndGet(String schemName) {
+        if(paste(schemName, last, 50, last)) {
+            Location min = new Location(world, last + .5, 50, last - .5);
+            Location max = new Location(world, last + 132.5, 200, last - 132.5);
 
-        Arena arena = new Arena(min, max);
-        saveArena(arena);
-        addArena(arena);
-        return arena;
+            Arena arena = new Arena(min, max, schemName);
+            saveArena(arena);
+            addArena(arena);
+            return arena;
+        } else {
+            return null;
+        }
+
     }
 
     public static void loadArenas() {
-        file.keySet().forEach(key -> addArena(UUID.fromString(key), Cuboid.fromString(file.getString(key + ".Cuboid"))));
+        file.keySet().forEach(key -> {
+            Arena arena = addArena(UUID.fromString(key), Cuboid.fromString(file.getString(key + ".Cuboid")), file.getString(key + ".Schematic"));
+        });
     }
 
     public static void saveArena(Arena arena) {
         file.setPathPrefix(arena.getUUID().toString());
         file.set("Cuboid", arena.getCuboid().toString());
+        file.set("Schematic", arena.getSchemName());
     }
 
-    public static void addArena(UUID uuid, Cuboid cuboid) {
-        addArena(new Arena(uuid, cuboid));
+    public static Arena addArena(UUID uuid, Cuboid cuboid, String schemName) {
+        return new Arena(uuid, cuboid, schemName);
     }
 
     public static void addArena(Arena arena) {

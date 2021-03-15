@@ -1,5 +1,6 @@
 package com.prophaze.luxduels.event;
 
+import com.google.common.collect.Lists;
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.arena.ArenaManager;
@@ -10,6 +11,7 @@ import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.queue.Queue;
+import com.prophaze.luxduels.util.Constants;
 import com.prophaze.luxduels.util.item.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +29,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 
+import java.util.List;
+
 import static com.prophaze.luxduels.util.Messenger.send;
 
 /**
@@ -37,12 +41,13 @@ import static com.prophaze.luxduels.util.Messenger.send;
 
 public class PlayerListener implements Listener {
 
+    public static List<Profile> cantMove = Lists.newArrayList();
+
     @EventHandler
-    public void onMove(BlockBreakEvent event) {
+    public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if(ArenaManager.getArenaContaining(event.getBlock().getLocation()) != null) {
-            Arena arena = ArenaManager.getArenaContaining(event.getBlock().getLocation());
-            send(player, "Arena " + arena.getUUID().toString());
+        if (event.getFrom().getZ() != event.getTo().getZ() && event.getFrom().getX() != event.getTo().getX()) {
+            if(cantMove.contains(ProfileManager.getProfile(player))) event.setCancelled(true);
         }
     }
 
@@ -77,15 +82,12 @@ public class PlayerListener implements Listener {
         if (MatchManager.isInMatch(profile)) {
             Match match = MatchManager.getMatch(profile);
             if (profile.getUUID().equals(match.getProfileOne().getUUID())) {
-                match.setWinner(match.getProfileOne());
-            }
-            match.setWinner(match.getProfileTwo());
+                match.setWinner(match.getProfileTwo());
+            } else match.setWinner(match.getProfileOne());
         }
         Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> {
             event.getEntity().spigot().respawn();
-            if(BuilderCommand.getBuilders().contains(profile.getUUID())) {
-
-            } else {
+            if(!BuilderCommand.getBuilders().contains(profile.getUUID())) {
                 Items.setServerItems(profile.getPlayer());
             }
         }, 5L);
@@ -98,6 +100,7 @@ public class PlayerListener implements Listener {
         send(player, "&4&lNOTE: &7This is a beta, please report all bugs in our discord.");
         ProfileManager.loadProfile(player.getUniqueId());
         Items.setServerItems(player);
+        Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> player.teleport(Constants.spawnLocation), 2L);
     }
 
     @EventHandler

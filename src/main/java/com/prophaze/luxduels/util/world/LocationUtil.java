@@ -1,4 +1,4 @@
-package com.prophaze.luxduels.util.item;
+package com.prophaze.luxduels.util.world;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,7 +13,7 @@ public class LocationUtil {
 
     public static Location stringToLocation(String string) {
         String[] split = string.split(",");
-        return new Location(Bukkit.getWorld(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
+        return new Location(Bukkit.getWorld(split[3]), Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
     }
 
 }
