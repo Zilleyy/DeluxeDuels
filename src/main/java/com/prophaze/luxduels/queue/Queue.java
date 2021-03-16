@@ -1,21 +1,25 @@
 package com.prophaze.luxduels.queue;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.kits.Kit;
 import com.prophaze.luxduels.match.Match;
 import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
+import com.prophaze.luxduels.util.Schematics;
 import com.prophaze.luxduels.util.item.Items;
+import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
 import org.bukkit.inventory.Inventory;
 
-import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Queue {
 
-    private static HashMap<Kit, LinkedList<Profile>> queue = new HashMap<>();
+    private static final Map<Kit, LinkedList<Profile>> queue = Maps.newHashMap();
 
     public static void addProfile(Kit kit, Profile profile) {
         LinkedList<Profile> list;
@@ -91,21 +95,22 @@ public class Queue {
         return true;
     }
 
-    public static Match next(Kit kit, String schemName) {
+    public static Match next(Kit kit) {
         if(queue.get(kit) == null) return null;
         if(queue.get(kit).size() < 2) return null;
-        Match returnMatch;
         Profile p1, p2;
         p1 = queue.get(kit).get(0);
         p2 = queue.get(kit).get(1);
         queue.get(kit).remove(p1);
         queue.get(kit).remove(p2);
-        if(ArenaManager.getVacant() == null) {
-            returnMatch = MatchManager.createAndGet(ArenaManager.createAndGet(schemName), kit, p1, p2);
+        String schemName = FilenameUtils.removeExtension(Schematics.getRandomSchematic());
+        if(ArenaManager.getVacant(schemName) == null) {
+            Arena arena = ArenaManager.createAndGet(schemName);
+            arena.setGeneratingMap(true);
+            return MatchManager.createAndGet(arena, kit, p1, p2);
         } else {
-            returnMatch = MatchManager.createAndGet(ArenaManager.getVacant(), kit, p1, p2);
+            return MatchManager.createAndGet(ArenaManager.getVacant(schemName), kit, p1, p2);
         }
-        return returnMatch;
     }
 
 }

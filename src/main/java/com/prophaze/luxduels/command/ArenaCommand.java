@@ -2,6 +2,7 @@ package com.prophaze.luxduels.command;
 
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.arena.ArenaManager;
+import com.prophaze.luxduels.util.Schematics;
 import com.prophaze.luxduels.util.world.LocationUtil;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -12,6 +13,7 @@ import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.libs.org.apache.commons.io.FilenameUtils;
 import org.bukkit.entity.Player;
 
 import static com.prophaze.luxduels.util.Messenger.send;
@@ -36,13 +38,21 @@ public class ArenaCommand {
     }
 
     @Subcommand("create")
-    public static void createArenaCommand(CommandSender sender, @AStringArgument String arenaName) {
+    public static void createArenaCommand(CommandSender sender, @AStringArgument String arenaSchem) {
         Player player = (Player) sender;
-        Arena arena = ArenaManager.createAndGet(arenaName);
+        Arena arena = ArenaManager.createAndGet(arenaSchem);
         if(arena != null) {
             player.teleport(arena.getCuboid().getCenter());
             send(sender, "&eTeleported you to the center of the Arena, please set player spawn locations");
         } else send(sender, "&cThat schematic wasn't found, this is caps sensitive and doesn't need the file ending (.schematic)!");
+    }
+
+    @Subcommand("schems")
+    public static void listArenaSchems(CommandSender sender) {
+        Player player = (Player) sender;
+        if(!Schematics.dirIsEmpty()) {
+            for(String s : Schematics.getSchematicNames()) send(player, "&e" + FilenameUtils.removeExtension(s));
+        } else send(player, "&cThe Schematics directory is currently empty.");
     }
 
     @Subcommand("setspawn")

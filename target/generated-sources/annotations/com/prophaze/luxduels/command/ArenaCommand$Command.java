@@ -25,9 +25,20 @@ public class ArenaCommand$Command {
                     .setListed(false)
             )
             .withPermission(CommandPermission.OP)
-            .withArguments(new StringArgument("arenaName"))
+            .withArguments(new StringArgument("arenaSchem"))
             .executes((sender, args) -> {
                 ArenaCommand.createArenaCommand(sender, (String) args[0]);
+            })
+            .register();
+
+        new CommandAPICommand("arena")
+            .withArguments(
+                new MultiLiteralArgument("schems")
+                    .setListed(false)
+            )
+            .withPermission(CommandPermission.OP)
+            .executes((sender, args) -> {
+                ArenaCommand.listArenaSchems(sender);
             })
             .register();
 

@@ -11,6 +11,7 @@ import com.prophaze.luxduels.match.MatchManager;
 import com.prophaze.luxduels.profile.Profile;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.queue.Queue;
+import com.prophaze.luxduels.task.CountdownTimer;
 import com.prophaze.luxduels.util.Constants;
 import com.prophaze.luxduels.util.item.Items;
 import org.bukkit.Bukkit;
@@ -85,12 +86,13 @@ public class PlayerListener implements Listener {
                 match.setWinner(match.getProfileTwo());
             } else match.setWinner(match.getProfileOne());
         }
+
         Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> {
             event.getEntity().spigot().respawn();
             if(!BuilderCommand.getBuilders().contains(profile.getUUID())) {
                 Items.setServerItems(profile.getPlayer());
             }
-        }, 5L);
+        }, 3L);
     }
 
     @EventHandler
@@ -99,7 +101,7 @@ public class PlayerListener implements Listener {
 
         send(player, "&4&lNOTE: &7This is a beta, please report all bugs in our discord.");
         ProfileManager.loadProfile(player.getUniqueId());
-        Items.setServerItems(player);
+        if(!BuilderCommand.getBuilders().contains(player.getUniqueId())) Items.setServerItems(player);
         Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> player.teleport(Constants.spawnLocation), 2L);
     }
 
@@ -111,7 +113,10 @@ public class PlayerListener implements Listener {
             Match match = MatchManager.getMatch(profile);
             if (match.getProfileOne().equals(profile)) {
                 match.setWinner(match.getProfileTwo());
-            } else match.setWinner(match.getProfileOne());
+            } else {
+                match.setWinner(match.getProfileOne());
+            }
+            if(match.getCountdowns().size() > 0) match.getCountdowns().forEach(CountdownTimer::stopTask);
         }
         //TODO Make statistics work after base version release
         // profile.getFile().set(profile.getUUID().toString() + ".stats", profile.getPlayerStats().toString());
@@ -183,7 +188,8 @@ public class PlayerListener implements Listener {
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             event.setCancelled(true);
-            if(BuilderCommand.getBuilders().contains(player.getUniqueId()) || MatchManager.isInMatch(ProfileManager.getProfile(player)))
+            Profile profile = ProfileManager.getProfile(player);
+            if(BuilderCommand.getBuilders().contains(player.getUniqueId()) || (MatchManager.isInMatch(profile) && MatchManager.getMatch(profile).getMatchState().equals(Match.MatchState.PLAYING)))
                 event.setCancelled(false);
          }
     }

@@ -1,7 +1,5 @@
 package com.prophaze.luxduels.inventory;
 
-import com.prophaze.luxduels.arena.Arena;
-import com.prophaze.luxduels.arena.ArenaManager;
 import com.prophaze.luxduels.kits.Kit;
 import com.prophaze.luxduels.kits.KitManager;
 import com.prophaze.luxduels.profile.Profile;
@@ -23,13 +21,9 @@ public class MatchTypeInventory implements InventoryProvider {
             Profile profile = ProfileManager.getProfile(player);
             Kit kit = KitManager.serverKits.get(i);
             contents.set(SlotPos.of(0, i + 1), ClickableItem.of(kit.kitIcon(),e -> {
-                Arena arena = ArenaManager.getVacant();
-                if(arena != null && arena.isComplete()) {
-                    Queue.addProfile(kit, profile);
-                    send(player, "&7You joined the queue for &e" + kit.getKitName() + "&7. &8(&7" + Queue.getPositionOf(profile) + "&8/&7" + Queue.getSize(kit) + "&8)");
-                    player.closeInventory();
-                }
-
+                Queue.addProfile(kit, profile);
+                send(player, "&7You joined the queue for &e" + kit.getKitName() + "&7. &8(&7" + Queue.getPositionOf(profile) + "&8/&7" + Queue.getSize(kit) + "&8)");
+                player.closeInventory();
             }));
         }
     }

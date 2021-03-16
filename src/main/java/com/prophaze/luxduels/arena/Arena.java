@@ -19,10 +19,11 @@ public class Arena {
 
     @Getter private final Cuboid cuboid;
     @Getter private final UUID UUID;
-    @Getter private String schemName;
+    @Getter private final String schemName;
 
     @Getter @Setter private Match match;
     @Getter @Setter private Location loc1, loc2;
+    @Getter @Setter private boolean generatingMap = false;
 
     /**
      * Constructor for Arena, should only be called from the ArenaManager.

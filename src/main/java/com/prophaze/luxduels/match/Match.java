@@ -1,6 +1,7 @@
 package com.prophaze.luxduels.match;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.arena.Arena;
 import com.prophaze.luxduels.event.PlayerListener;
@@ -16,7 +17,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -37,6 +37,8 @@ public class Match {
     @Getter private final Profile profileOne;
     @Getter private final Kit kit;
     @Getter private MatchState matchState;
+    @Getter private final List<CountdownTimer> countdowns = Lists.newArrayList();
+
     @Getter @Setter private Profile profileTwo;
 
     private Profile winner;
@@ -44,7 +46,7 @@ public class Match {
     private final List<UUID> spectators;
 
     // Key = the material it was before it was modified
-    private List<SimpleEntry<Material, Location>> blocks = new ArrayList<>();
+    private final List<SimpleEntry<Material, Location>> blocks = Lists.newArrayList();
 
     protected Match(Arena arena, Kit kit, Profile profileOne) {
         this.arena = arena;
@@ -64,7 +66,6 @@ public class Match {
 
         this.matchSettings = new MatchSettings();
         this.spectators = Lists.newArrayList();
-        this.matchState = MatchState.WAITING;
     }
 
     public void addSpectator(Profile profile) {
@@ -131,6 +132,7 @@ public class Match {
     public boolean canStart() {
         return profileOne != null && profileTwo != null;
     }
+
     public void start() {
         if(canStart()) {
             this.matchState = MatchState.STARTING;
@@ -148,6 +150,7 @@ public class Match {
                     () -> {
                         PlayerListener.cantMove.remove(profileOne);
                         PlayerListener.cantMove.remove(profileTwo);
+                        this.matchState = MatchState.PLAYING;
                     },
                     (t) -> {
                         sendTitle(profileOne.getPlayer(), t.getSecondsLeft() + "","");
@@ -155,6 +158,8 @@ public class Match {
                     }
             );
             timer.scheduleTimer();
+            countdowns.add(timer);
+            Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> countdowns.remove(timer), 20 * 6);
         }
     }
 
@@ -170,8 +175,8 @@ public class Match {
         resetBlocks();
 
         Bukkit.getScheduler().runTaskLater(LuxDuels.getInstance(), () -> {
-            profileOne.getPlayer().teleport(Constants.spawnLocation);
-            profileTwo.getPlayer().teleport(Constants.spawnLocation);
+            if(profileOne.getPlayer() != null) profileOne.getPlayer().teleport(Constants.spawnLocation);
+            if(profileTwo.getPlayer() != null) profileTwo.getPlayer().teleport(Constants.spawnLocation);
             profileOne.getPlayer().setHealth(20.0);
             profileTwo.getPlayer().setHealth(20.0);
 
@@ -192,7 +197,7 @@ public class Match {
         WAITING(),
         STARTING(),
         PLAYING(),
-        FINISHED();
+        FINISHED()
 
     }
 

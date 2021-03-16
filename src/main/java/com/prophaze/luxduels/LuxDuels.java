@@ -10,7 +10,6 @@ import com.prophaze.luxduels.kits.KitManager;
 import com.prophaze.luxduels.profile.ProfileManager;
 import com.prophaze.luxduels.task.MatchHandler;
 import com.prophaze.luxduels.task.QueueHandler;
-import com.prophaze.luxduels.util.world.VoidWorld;
 import dev.jorel.commandapi.CommandAPI;
 import fr.minuskube.inv.InventoryManager;
 import lombok.Getter;
@@ -19,6 +18,8 @@ import org.bukkit.*;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 public class LuxDuels extends JavaPlugin {
@@ -44,7 +45,6 @@ public class LuxDuels extends JavaPlugin {
         // MUST RUN BEFORE ANY OTHER METHODS.
         CommandAPI.onEnable(this);
 
-        this.loadWorlds();
         this.loadFiles();
         this.registerEvents();
         ProfileManager.loadProfiles();
@@ -53,20 +53,8 @@ public class LuxDuels extends JavaPlugin {
         this.loadRunnables();
         inventoryManager = new InventoryManager(this);
         inventoryManager.init();
-    }
 
-    private void loadWorlds() {
-        if (Bukkit.getWorld("arenas") == null) {
-            Bukkit.createWorld(new WorldCreator("arenas")
-                    .generator(new VoidWorld())
-                    .type(WorldType.FLAT)
-                    .generatorSettings(""));
-        }
-        final World arenas = Bukkit.getWorld("arenas");
-        arenas.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        arenas.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        arenas.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-        arenas.setStorm(false);
+        new File(getDataFolder(), "Schematics").mkdir();
     }
 
     private void loadFiles() {

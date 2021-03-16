@@ -4,7 +4,6 @@ import com.boydti.fawe.FaweAPI;
 import com.google.common.collect.Lists;
 import com.prophaze.luxduels.LuxDuels;
 import com.prophaze.luxduels.file.Yaml;
-import com.prophaze.luxduels.kits.Kit;
 import com.prophaze.luxduels.util.Cuboid;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
@@ -56,14 +55,15 @@ public class ArenaManager {
         return null;
     }
 
-    public static Arena getVacant() {
+    public static Arena getVacant(String schemName) {
         for(Arena arena : arenas) {
-            if(arena.isVacant()) {
+            if(arena.isVacant() && arena.getSchemName().equalsIgnoreCase(schemName)) {
                 return arena;
             }
         }
         return null;
     }
+
 
     public static void setString(String path, String string) {
         file.set(path, string);
@@ -96,18 +96,16 @@ public class ArenaManager {
     }
 
     public static Arena createAndGet(String schemName) {
+        Arena arena = null;
         if(paste(schemName, last, 50, last)) {
             Location min = new Location(world, last + .5, 50, last - .5);
             Location max = new Location(world, last + 132.5, 200, last - 132.5);
 
-            Arena arena = new Arena(min, max, schemName);
+             arena = new Arena(min, max, schemName);
             saveArena(arena);
             addArena(arena);
-            return arena;
-        } else {
-            return null;
         }
-
+        return arena;
     }
 
     public static void loadArenas() {
